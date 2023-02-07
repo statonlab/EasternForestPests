@@ -13,8 +13,8 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-12">
-                test
-                <router-view></router-view>
+                this is app.vue
+<!--                <router-view></router-view>-->
               </div>
             </div>
           </div>
@@ -27,8 +27,17 @@
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue";
+
 export default {
-  name: "App.vue"
+  name: "App.vue",
+  components: {Navbar},
+  // props: {
+  //   user       : {required: false, type: Number},
+  // },
+  // mounted() {
+  //   console.log(this.user)
+  // }
 }
 </script>
 

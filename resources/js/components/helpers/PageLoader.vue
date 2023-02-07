@@ -3,9 +3,9 @@
 </template>
 
 <script>
-  import Modal from './Modal'
-  import ModalCard from './ModalCard'
-  import Spinner from './Spinner'
+  import Modal from './Modal.vue'
+  import ModalCard from './ModalCard.vue'
+  import Spinner from './Spinner.vue'
   export default {
     name: 'PageLoader',
     components: {Spinner, ModalCard, Modal},
