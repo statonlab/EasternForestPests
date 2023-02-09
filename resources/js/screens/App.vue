@@ -3,8 +3,8 @@
 <!--    <alerts/>-->
 
     <div :class="'main-container'">
-      <!-- Navbar -->
-<!--      <navbar @toggle="toggleSidebar" ref="navbar"/>-->
+<!--       Navbar -->
+      <navbar ref="navbar"/>
       <!-- sidebar -->
 <!--      <sidebar ref="sidebar" @close="smClose"/>-->
       <div class="main-content">
@@ -14,7 +14,7 @@
             <div class="row">
               <div class="col-12">
                 this is app.vue
-<!--                <router-view></router-view>-->
+                <router-view></router-view>
               </div>
             </div>
           </div>
@@ -32,12 +32,8 @@ import Navbar from "../components/Navbar.vue";
 export default {
   name: "App.vue",
   components: {Navbar},
-  // props: {
-  //   user       : {required: false, type: Number},
-  // },
-  // mounted() {
-  //   console.log(this.user)
-  // }
+  mounted() {
+  }
 }
 </script>
 

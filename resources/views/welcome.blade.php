@@ -19,8 +19,8 @@
     <div class="d-flex justify-content-center align-items-center" style="flex-direction: column">
         <span>This site is under construction! Come back later and I'll look more presentable.</span>
         <img src="{{ asset('img/under_construction.jpg') }}" alt="construction sign" width="400" height="400">
-        <div id="app">
-            <app/>
-        </div>
+{{--        <div id="app">--}}
+{{--            <app></app>--}}
+{{--        </div>--}}
     </div>
 @endsection

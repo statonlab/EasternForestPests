@@ -11,7 +11,6 @@
  */
 
 
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -36,44 +35,7 @@
 // import './bootstrap'
 // import Vue from 'vue'
 // import VueRouter from 'vue-router'
-import PageLoader from './components/helpers/PageLoader.vue'
-import ErrorPage from './components/helpers/ErrorPage.vue'
-//
-// /**
-//  * Loads a component asynchronously.
-//  *
-//  * @param component
-//  * @return {{component: *, delay: number, loading: {components, name}, error: {name, mounted}, timeout: number}}
-//  * @constructor
-//  */
-// const AsyncComponent = (component) => ({
-//     // The component to load (should be a Promise)
-//     component,
-//     // A component to use while the async component is loading
-//     loading: PageLoader,
-//     // A component to use if the load fails
-//     error: ErrorPage,
-//     // Delay before showing the loading component. Default: 200ms.
-//     delay: 200,
-//     // The error component will be displayed if a timeout is
-//     // provided and exceeded. Default: Infinity.
-//     timeout: 3000,
-// })
-//
-// // Register screens
-// const routes = [
-//     // We use the webpack chunk name option to make sure the file goes into public/js/NAME.
-//     // Without this setting, the file name will be a numeric value that makes it hard to find.
-//     {
-//         path: '/adminn',
-//         component: () => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/Dashboard.vue')),
-//     },
-//     // {
-//     //     path: '/admin/observations',
-//     //     component: () => AsyncComponent(import (/* webpackChunkName: "js/observations-browser" */'./screens/ObservationsBrowser.vue')),
-//     // }
-// ]
-//
+
 // Vue.use(VueRouter)
 //
 //
@@ -94,91 +56,71 @@ import ErrorPage from './components/helpers/ErrorPage.vue'
 // const app = createApp({App});
 // app.mount('#app');
 //______________________________________
+import PageLoader from './components/helpers/PageLoader.vue'
+import ErrorPage from './components/helpers/ErrorPage.vue'
+
+/**
+ * Loads a component asynchronously.
+ *
+ * @param component
+ * @return {{component: *, delay: number, loading: {components, name}, error: {name, mounted}, timeout: number}}
+ * @constructor
+ */
+const AsyncComponent = (component) => ({
+    // The component to load (should be a Promise)
+    component,
+    // A component to use while the async component is loading
+    loading: PageLoader,
+    // A component to use if the load fails
+    error: ErrorPage,
+    // Delay before showing the loading component. Default: 200ms.
+    delay: 200,
+    // The error component will be displayed if a timeout is
+    // provided and exceeded. Default: Infinity.
+    timeout: 3000,
+})
+
+
+
+// Register screens
+const routes = [
+    // We use the webpack chunk name option to make sure the file goes into public/js/NAME.
+    // Without this setting, the file name will be a numeric value that makes it hard to find.
+    {
+        path: '/adminn',
+        component: Dashboard,//() => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/Dashboard.vue')),
+    },
+    {
+        path: '/',
+        component: ExampleComponent,
+    },
+    {
+        path: '/login',
+        component: ExampleComponent,
+    },
+    // {
+    //     path: '/home',
+    //     component: App,
+    // },
+    // {
+    //     path: '/admin/observations',
+    //     component: () => AsyncComponent(import (/* webpackChunkName: "js/observations-browser" */'./screens/ObservationsBrowser.vue')),
+    // }
+]
+
 import('./bootstrap')
 
-import { createApp } from 'vue'
+import {createApp} from 'vue'
+import {createRouter, createWebHistory} from 'vue-router';
 import App from './screens/App.vue'
+import ExampleComponent from "./components/ExampleComponent.vue";
+import Dashboard from "./screens/Dashboard.vue";
 
-const app = createApp({})
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+})
 
-app.component('app',App)
-
-app.mount('#app')
-
-// import './bootstrap'
-// import Vue from 'vue'
-// import App from './screens/App.vue'
-// import VueRouter from 'vue-router'
-// // import VueI18n from 'vue-i18n'
-// // import Notifications from 'vue-notification'
-// // import en from './lang/en'
-// // import PageLoader from './components/PageLoader'
-// // import ErrorPage from './components/ErrorPage'
-// // import Alert from './plugins/Alert/Alert'
-// // import VCalendar from 'v-calendar'
-// // import Title from './plugins/Title'
-// // import Downloader from './plugins/Downloader'
-// // import Scroll from './plugins/Scroll'
-//
-// Vue.use(VueRouter)
-// // Vue.use(VueI18n)
-// // Vue.use(Notifications)
-// // Vue.use(Alert)
-// // Vue.use(VCalendar)
-// // Vue.use(Title)
-// // Vue.use(Downloader)
-// // Vue.use(Scroll)
-//
-//
-// /**
-//  * Loads a component asynchronously.
-//  *
-//  * @param component
-//  * @return {{component: *, delay: number, loading: {components, name}, error: {name, mounted}, timeout: number}}
-//  * @constructor
-//  */
-// const AsyncComponent = (component) => ({
-//     // The component to load (should be a Promise)
-//     component,
-//     // A component to use while the async component is loading
-//     loading: PageLoader,
-//     // A component to use if the load fails
-//     error: ErrorPage,
-//     // Delay before showing the loading component. Default: 200ms.
-//     delay: 200,
-//     // The error component will be displayed if a timeout is
-//     // provided and exceeded. Default: Infinity.
-//     timeout: 3000,
-// })
-//
-// // Register screens
-// const routes = [
-//     // We use the webpack chunk name option to make sure the file goes into public/js/NAME.
-//     // Without this setting, the file name will be a numeric value that makes it hard to find.
-//     {
-//         path     : '/admin',
-//         component: () => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/Dashboard.vue')),
-//     },
-//     // {
-//     //     path     : '/admin/documentation',
-//     //     component: () => AsyncComponent(import (/* webpackChunkName: "js/posts" */'./screens/documentation/Posts')),
-//     // },
-//     // {
-//     //     path     : '/admin/documentation/:id',
-//     //     component: () => AsyncComponent(import (/* webpackChunkName: "js/post" */'./screens/documentation/Post')),
-//     // },
-// ]
-//
-// // Create the router instance and pass the `routes` option
-// const router = new VueRouter({
-//     routes,
-//     mode: 'history',
-// })
-//
-// // Create and mount the app
-// new Vue({
-//     router,
-//     components: {
-//         App,
-//     },
-// }).$mount('#app')
+createApp(App)
+    .use(router)
+    .mount('#app')

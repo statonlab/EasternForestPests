@@ -26,6 +26,32 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $routes = [
+            'admin',
+            'adminn',
+            'logout',
+            'users',
+            'users/([0-9]+)',
+            'superuser',
+            'superuser/errors',
+            'superuser/notifications',
+            'account',
+            'downloads',
+            'documentation',
+            'documentation/([0-9]+)',
+            'data-upload',
+            'data-upload/dart',
+            'data-upload/dart/create',
+            'data-upload/dart/([0-9]+)/edit',
+            'data-upload/dart/([0-9]+)',
+            'data-upload/isotope',
+            'data-upload/isotope/create',
+            'data-upload/isotope-confirmation/([0-9]+)',
+            'data-upload/isotope/([0-9]+)/edit',
+            'data-upload/isotope/([0-9]+)',
+        ];
+        $this->pattern('vue', implode('|', $routes));
+
         $this->configureRateLimiting();
 
         $this->routes(function () {
