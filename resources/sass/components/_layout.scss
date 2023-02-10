@@ -1,0 +1,181 @@
+.main-content,
+.sidebar {
+  padding-top: 56px;
+}
+
+.main-container {
+  overflow: hidden;
+}
+
+.main-content {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: 1.5em;
+  transition: margin-left .2s ease-in-out;
+}
+
+.sidebar {
+  position: fixed;
+  z-index: $zindex-fixed - 1;
+  top: 0;
+  left: 0;
+  transition: left .2s ease-in-out;
+  height: 100%;
+  width: $sidebar-width;
+  background-color: $white;
+  overflow-y: auto;
+  border-right: 1px solid $border-color;
+}
+
+.w-sidebar {
+  width: $sidebar-width;
+}
+
+.sidebar-closed {
+  .sidebar {
+    left: -$sidebar-width;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    left: -$sidebar-width;
+  }
+
+  .sidebar-closed {
+    .sidebar {
+      left: 0;
+    }
+  }
+}
+
+.logo {
+  @include media-breakpoint-up(lg) {
+    width: $sidebar-width;
+  }
+}
+
+.content-container {
+  min-height: calc(100vh - 120px);
+}
+
+.navbar {
+  padding: .1rem $spacer;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 250ms ease-in-out;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.h-500px {
+  height: 500px;
+  width: 100%;
+}
+
+.notifications {
+  position: fixed;
+  margin: 16px;
+}
+
+.carousel-img {
+  min-height: 400px;
+  max-height: 95vh;
+  width: auto;
+  margin: 0 auto;
+}
+
+.navbar {
+  .dropdown-menu {
+    min-width: 200px;
+  }
+}
+
+.dropdown-item {
+  @extend .d-flex;
+
+  .icon {
+    display: inline-block;
+    width: 30px;
+    font-size: 1rem;
+  }
+}
+
+.w-50-md {
+  width: 100%;
+  @include media-breakpoint-up(md) {
+    width: 50%
+  }
+}
+
+.bg-gray-lighter {
+  background-color: rgba(33, 33, 33, .04);
+}
+
+.text-on-gray {
+  color: rgba(33, 33, 33, .6);
+}
+
+.limit-width {
+  max-width: 500px;
+}
+
+.map-sm {
+  height: 260px;
+}
+
+.min-w-100 {
+  min-width: 100%;
+}
+
+.last-no-border,
+.last-border-0 {
+  &:last-of-type {
+    border-width: 0 !important;
+  }
+}
+
+b, strong {
+  font-weight: $font-weight-bold;
+}
+
+.table th {
+  font-weight: $font-weight-bold;
+}
+
+.hover-container {
+  .show-on-hover {
+    visibility: hidden;
+  }
+
+  &:hover {
+    .show-on-hover {
+      visibility: visible;
+    }
+  }
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.modal.modal-scrollable {
+  overflow: auto;
+
+  .modal-body {
+    overflow: initial;
+    max-height: none;
+  }
+}

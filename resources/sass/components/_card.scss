@@ -1,0 +1,62 @@
+.card {
+    box-shadow: 0 0 1px rgba(0, 0, 0, .25), 0 2px 5px rgba(0, 0, 0, .125);
+    border: 0;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    &.is-loading {
+        opacity: .5;
+    }
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: $font-weight-bold;
+    margin: 0;
+}
+
+.card-header {
+    border-top-left-radius: $border-radius!important;
+    border-top-right-radius: $border-radius!important;
+    border-bottom: 0;
+}
+
+.card-footer {
+    border-top: 0;
+}
+
+.modal-title {
+    font-size: 1rem;
+    font-weight: $font-weight-bold;
+}
+
+.modal-body {
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+}
+
+.card-img-bg {
+    height: 250px;
+    background-size: cover;
+    //background-
+    background-color: $white;
+    background-position: center center;
+    background-repeat: no-repeat;
+    //border-top-left-radius: $border-radius;
+    //border-top-right-radius: $border-radius;
+}
+
+.border-left-info {
+    border-left: 6px solid $info;
+}
+
+.border-left-primary {
+    border-left: 6px solid $primary;
+}
+
+.card-max-w {
+    max-width: 500px;
+}
+
+.card-header .form-control[type="search"] {
+    max-width: 250px;
+}

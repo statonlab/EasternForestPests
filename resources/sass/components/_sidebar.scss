@@ -1,0 +1,114 @@
+.sidebar {
+    .nav-link {
+        color: $gray-700;
+        cursor: pointer;
+        @extend .d-flex;
+        @extend .align-items-center;
+        transition: background-color .2s linear, color .2s linear;
+
+        &:hover {
+            background-color: $gray-100;
+            &, .icon {
+                color: $gray-800;
+            }
+        }
+
+        .icon {
+            color: $gray-500;
+            width: 24px;
+            @extend .mr-2 !optional;
+            font-size: 1.2rem;
+        }
+
+        .right-arrow {
+            visibility: hidden;
+        }
+
+        &.active {
+            background-color: rgba($primary, .1);
+
+            &,
+            .icon {
+                color: darken($primary, 15%);
+            }
+
+            .right-arrow {
+                visibility: visible;
+                width: auto;
+            }
+        }
+    }
+}
+
+.sidebar {
+    .nav-link {
+        border-radius: 0 !important;
+    }
+
+    .sidebar-menu {
+        .nav-link {
+            padding-left: 48px;
+        }
+    }
+
+    .sidebar-menu-container {
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        transition: border-top-color 250ms ease-in-out, border-bottom-color 250ms ease-in-out;
+    }
+
+    .menu-caret {
+        border-color: $gray-400;
+        transition: transform 250ms linear;
+        margin-right: 1rem;
+        transform: rotate(135deg);
+    }
+
+    .is-open {
+        border-top-color: $border-color;
+        border-bottom-color: $border-color;
+
+        .menu-caret {
+            transform: rotate(45deg);
+            border-color: darken($primary, 15%);
+        }
+
+        .sidebar-menu-header {
+            &,
+            .icon {
+                color: darken($primary, 15%);
+            }
+        }
+    }
+}
+
+// Side transition
+.slide-enter-active {
+    transition-duration: 250ms;
+    transition-timing-function: ease-in;
+}
+
+.slide-leave-active {
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slide-enter-to, .slide-leave {
+    max-height: 100px;
+    overflow: hidden;
+    flex-wrap: nowrap!important;
+}
+
+.slide-enter, .slide-leave-to {
+    overflow: hidden;
+    max-height: 0;
+    flex-wrap: nowrap!important;
+}
+
+.caret {
+    border: solid currentColor;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+}

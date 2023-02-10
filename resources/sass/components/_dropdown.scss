@@ -1,0 +1,50 @@
+.dropdown-menu {
+  .icon {
+    color: $gray-500;
+  }
+
+  a.dropdown-item {
+    &:hover {
+      .icon {
+        color: $gray-700;
+      }
+    }
+
+    &:active,
+    &.active {
+      background-color: rgba($primary, .2);
+
+      &,
+      .icon {
+        color: darken($primary, 10%);
+      }
+    }
+  }
+}
+
+.text-overflow-visible {
+  white-space: normal;
+}
+
+.dropdown-icon-lg {
+  font-size: 1.3rem !important;
+}
+
+.dropdown-scroll {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.dropdown-menu-height {
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.dropdown-menu-min-width {
+  min-width: 350px;
+  max-width: 100vw;
+}

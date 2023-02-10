@@ -1,0 +1,29 @@
+.table-middle {
+  td, th {
+    vertical-align: middle;
+  }
+}
+
+.th-no-wrap {
+    tbody,
+    thead {
+        > tr > th {
+            white-space: nowrap;
+        }
+    }
+}
+
+.table-rounded-bottom {
+  tr:last-of-type {
+    td:first-of-type {
+      border-bottom-left-radius: $border-radius;
+    }
+    td:last-of-type {
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+}
+
+.table-fixed {
+  table-layout: fixed;
+}

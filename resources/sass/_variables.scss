@@ -1,7 +1,119 @@
-// Body
-$body-bg: #f8fafc;
+//// Body
+//$body-bg: #f8fafc;
+//
+//// Typography
+//$font-family-sans-serif: 'Nunito', sans-serif;
+//$font-size-base: 0.9rem;
+//$line-height-base: 1.6;
+
+// Options
+$enable-shadows: false;
+$enable-transitions: true;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+$font-weight-lighter: 100;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 600;
+$font-weight-bolder: 800;
+
+$headings-font-weight: $font-weight-bold;
+
+// Colors
+
+$blue: #007bff;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #18a86c;
+$teal: #20c997;
+$cyan: #17a2b8;
+
+$black: #212121;
+$gray-100: #F9FAFB; // #f8f9fa;
+$gray-200: #F3F4F6;//#E5E7EB; //#e9ecef;
+$gray-300: #E5E7EB; //#dee2e6;
+$gray-400: #D1D5DB; //#ced4da;
+$gray-500: #9CA3AF; //#adb5bd;
+$gray-600: #6B7280; //#6c757d;
+$gray-700: #4B5563; //#495057;
+$gray-800: #374151; //#343a40;
+$gray-900: #1F2937; //#212529;
+$white: #ffffff;
+
+$light: $gray-100;
+$dark: $gray-800;
+
+$primary: $green;
+$danger: $red;
+
+// Body
+$body-bg: lighten($gray-100, 1%);
+
+$box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
+$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+$box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
+
+// Sidebar
+$sidebar-width: 250px;
+$sidebar-bg: $white;
+$sidebar-text-color: $dark;
+$sidebar-link-color: $dark;
+$sidebar-active-color: $primary;
+$sidebar-active-bg: transparent;
+$sidebar-hover-bg: transparent;
+$sidebar-hover-color: darken($primary, 10%);
+
+// Borders
+$border-color: $gray-300;
+
+//Sidebar Sub Menus
+$submenu-bg: darken($dark, 5%);
+
+// Logo
+$logo-bg: $white;
+
+// Input
+$input-focus-border-color: lighten($primary, 5%);
+$input-box-shadow: none;
+$input-border-color: $border-color;
+
+
+// Links
+$link-hover-decoration: none;
+
+$border-radius: .2rem !default;
+$border-radius-lg: .3rem !default;
+$border-radius-sm: .15rem !default;
+
+$nav-pills-link-active-bg: rgba($primary, .1);
+$nav-pills-link-active-color: darken($primary, 5%);
+
+//$table-hover-bg: darken($gray-100, 1%);
+//$table-accent-bg: darken($gray-100, 1%);
+$table-hover-bg: rgba($border-color, .3);
+$table-group-separator-color: $border-color;
+$table-striped-bg: $gray-100;
+
+$navbar-dark-color: rgba($white, .75) !default;
+$navbar-dark-hover-color: rgba($white, 1) !default;
+$navbar-dark-active-color: $white !default;
+$navbar-dark-disabled-color: rgba($white, .25) !default;
+$navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-dark-toggler-border-color: rgba($white, .1) !default;
+
+$card-cap-bg: $gray-100;
+
+$zindex-dropdown: 1040;
+
+//$dropdown-box-shadow: $box-shadow-lg;
+//$dropdown-border-width: 1;
+
+$small-font-size: 0.875rem;

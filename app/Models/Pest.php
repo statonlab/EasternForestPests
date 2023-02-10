@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pest extends Model
 {
-    use HasFactory;
-
     /**
      * The Pest.php model is used for both pests and diseases, since the two share so much info.
      * @var string[]
@@ -33,7 +31,8 @@ class Pest extends Model
     ];
 
     protected $casts = [
-        'scientific_name'
+        'common_name' => 'array',
+        'scientific_name' => 'array',
     ];
 
     public function chapter(): \Illuminate\Database\Eloquent\Relations\BelongsTo

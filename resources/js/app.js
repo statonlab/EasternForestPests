@@ -87,21 +87,25 @@ const routes = [
     // We use the webpack chunk name option to make sure the file goes into public/js/NAME.
     // Without this setting, the file name will be a numeric value that makes it hard to find.
     {
-        path: '/adminn',
-        component: Dashboard,//() => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/Dashboard.vue')),
+        path: '/',
+        component: Splash,
     },
     {
-        path: '/',
-        component: ExampleComponent,
+        path: '/glossary',
+        component: Splash,
+    },
+    {
+        path: '/about',
+        component: Splash,
+    },
+    {
+        path: '/admin',
+        component: AdminView,//() => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/AdminView.vue')),
     },
     {
         path: '/login',
         component: ExampleComponent,
     },
-    // {
-    //     path: '/home',
-    //     component: App,
-    // },
     // {
     //     path: '/admin/observations',
     //     component: () => AsyncComponent(import (/* webpackChunkName: "js/observations-browser" */'./screens/ObservationsBrowser.vue')),
@@ -114,7 +118,8 @@ import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
 import App from './screens/App.vue'
 import ExampleComponent from "./components/ExampleComponent.vue";
-import Dashboard from "./screens/Dashboard.vue";
+import AdminView from "./screens/AdminView.vue";
+import Splash from "./screens/Splash.vue";
 
 const router = createRouter({
     history: createWebHistory(),

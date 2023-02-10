@@ -3,6 +3,25 @@
 
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+// Components
+@import "components/layout";
+@import "components/sidebar";
+@import "components/letters-icon";
+@import "components/card";
+@import "components/search";
+@import "components/title";
+@import "components/button";
+@import "components/table";
+@import "components/text";
+@import "components/spacing";
+@import "components/dropdown";
+@import "components/map";
+@import "components/navs";
+@import "components/form";
+@import "components/blink";
+@import "components/editor";
+@import "components/colors";
+@import "components/utilities";
+

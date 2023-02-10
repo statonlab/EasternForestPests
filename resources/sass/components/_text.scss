@@ -1,0 +1,27 @@
+.text-xs {
+  font-size: .75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;
+}
+
+.text-md {
+  font-size: 1.2rem !important;
+}
+
+.text-lg {
+  font-size: 1.4rem !important;
+}
+
+.tracking-1 {
+  letter-spacing: .05rem !important;
+}
+
+.leading-1 {
+  line-height: 1rem !important;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+}

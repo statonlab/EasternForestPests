@@ -1,0 +1,142 @@
+.btn {
+  @extend .font-weight-bold  !optional;
+  @extend .align-items-center;
+
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  .icon {
+    @extend .d-inline-flex;
+    font-size: 20px;
+
+    + span {
+      @extend .d-inline-flex;
+      @extend .ml-1 !optional;
+    }
+  }
+
+  &.btn-sm {
+    .icon {
+      font-size: .9rem;
+    }
+  }
+}
+
+
+.btn-secondary {
+  box-shadow: none;
+}
+
+.icon-lg {
+  font-size: 2rem;
+}
+
+.icon-circle {
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: $danger;
+}
+
+.w-25p {
+  width: 25px;
+}
+
+.btn[disabled] {
+  cursor: not-allowed;
+}
+
+.btn-link {
+  &:hover {
+    background-color: rgba($primary, .1);
+  }
+
+  &.text-danger {
+    &:hover {
+      color: darken($danger, 10%);
+      background-color: rgba($danger, .1);
+    }
+  }
+
+  &.text-muted {
+    &:hover {
+      color: darken($primary, 10%)!important;
+    }
+  }
+}
+
+.autocomplete .dropdown-menu {
+  .scroll {
+    max-height: 40vh;
+    overflow: auto;
+  }
+
+  .dropdown-item {
+    white-space: normal;
+  }
+
+  .form-control {
+    border-width: 1px;
+  }
+}
+
+.btn-select {
+  @extend .form-control;
+
+  border-color: $input-border-color;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.btn-select-active {
+  color: $input-color;
+}
+
+.btn-placeholder-effect {
+  color: $input-placeholder-color !important;
+}
+
+.btn-toggle {
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-color: transparent;
+  text-align: center;
+
+  .icon {
+    font-size: 1.3rem !important;
+    margin: 0 auto;
+  }
+}
+
+.btn-white {
+  @include button-variant($white, $border-color);
+}
+
+.delete-caret {
+  &:after {
+    @extend .d-none;
+  }
+}
+
+.btn-transparent {
+  color: $gray-600;
+  background-color: transparent;
+  border-color: transparent;
+
+  &:hover {
+    background-color: $gray-100;
+  }
+}
+
+.btn.font-weight-normal {
+  font-weight: 400 !important;
+}

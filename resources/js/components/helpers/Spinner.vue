@@ -2,7 +2,7 @@
     <div class="spinner-container d-flex justify-content-center align-items-center"
          :style="`background-color: ${background};${fixed ? 'position: fixed !important;' : ''}left: ${left};`">
         <div class="spinner-grow text-primary" role="status">
-            <span class="sr-only">{{ $t('general.loading') }}...</span>
+            <span class="sr-only">{{'general.loading' }}...</span>
         </div>
         <p v-if="message !== ''" class="spinner-message">{{ message }}</p>
     </div>

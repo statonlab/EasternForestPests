@@ -1,0 +1,16 @@
+.last-mb-0 {
+  &:last-of-type {
+    margin-bottom: 0 !important;
+  }
+}
+
+.rounded-bottom-0 {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.p-mb-0 {
+  p {
+    margin-bottom: 0;
+  }
+}

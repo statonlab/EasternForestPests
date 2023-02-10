@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pests', function (Blueprint $table) {
             $table->id();
-            $table->string('common_name')->nullable();
+            $table->json('common_name')->nullable();
             $table->json('scientific_name')->nullable();
             $table->string('description')->nullable();
             $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();

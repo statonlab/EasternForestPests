@@ -1,0 +1,92 @@
+.bg-transparent-dark {
+  background-color: rgba(0, 0, 0, .4);
+}
+
+.bg-transparent-light {
+  background-color: rgba(255, 255, 255, .4);
+}
+
+.bg-primary-transparent,
+.bg-success-transparent {
+  background-color: rgba($primary, .15) !important;
+}
+
+.bg-info-transparent {
+  background-color: rgba($info, .15) !important;
+}
+
+.bg-error-transparent,
+.bg-danger-transparent {
+  background-color: rgba($danger, .15) !important;
+}
+
+.bg-warning-transparent {
+  background-color: rgba($warning, .15) !important;
+}
+
+.bg-info,
+.bg-danger {
+  a {
+    color: #fff;
+    text-decoration: underline;
+
+    &:hover {
+      color: rgba(255, 255, 255, .8);
+    }
+  }
+}
+
+.hover-bg-light {
+  &:hover {
+    background-color: $light !important;
+  }
+}
+
+.text-success-dark,
+.text-primary-dark {
+  color: darken($primary, 10%) !important;
+}
+
+.text-error-dark,
+.text-danger-dark {
+  color: darken($danger, 10%) !important;
+}
+
+.text-info-dark {
+  color: darken($info, 10%) !important;
+}
+
+.text-warning-dark {
+  color: darken($warning, 10%) !important;
+}
+
+
+.text-gray-400 {
+  color: $gray-400;
+}
+
+.text-gray-500 {
+  color: $gray-500;
+}
+
+.text-gray-600 {
+  color: $gray-600;
+}
+
+.text-gray-700 {
+  color: $gray-700;
+}
+
+.hover-bg-transparent {
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+a.text-dark:hover {
+  color: $primary !important;
+}
+
+a.text-muted:hover {
+  color: $primary !important;
+}

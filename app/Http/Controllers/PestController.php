@@ -21,7 +21,10 @@ class PestController extends Controller
         // request validation may be needed as filters are added
 
         // several filters will be added
-        $pests = Pest::all();
+        $pests = Pest::with('chapter')
+            ->when(!empty($request->search), function ($query) use ($request) {
+                $query->where('common_name', 'LIKE', $request->search . '%');
+            })->paginate(5);
 
         return $this->success($pests);
     }
@@ -87,5 +90,15 @@ class PestController extends Controller
         ]);
 
         return $this->created($pest);
+    }
+
+    public function destroy(Request $request, Pest $pest): \Illuminate\Http\JsonResponse
+    {
+        // authorize user
+        // validate request
+
+        $pest->delete();
+
+        return $this->success($pest);
     }
 }
