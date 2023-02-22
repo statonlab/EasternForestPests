@@ -1,9 +1,9 @@
 <template>
-  <div class="main-container">
+  <div class="bg-gray-lighter">
 <!--    <sidebar v-if="this.user"/>-->
-    <div class="main-content">
+    <div>
       <navbar ref="navbar"/>
-      <div class="py-3 px-2 content-container">
+      <div class="py-4 px-2">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">

@@ -15,15 +15,25 @@
             <!--                 :alt="img"-->
             <!--                 class="object-cover rounded flex-shrink-0" style="height: 50px; width: 50px;">-->
             <div class="ms-3">
-              <span class="fw-bold text-gray-800">
-                {{ pest.common_name[0] ? pest.common_name[0] : 'No name provided' }}
+              <div v-if="pest.common_names.length > 0">
+                <span v-if="pest.common_names[0]" class="fw-bold text-gray-800">
+                  {{ pest.common_names[0].name }}
+                </span>
+                <span v-if="pest.common_names.length>1" class="fw-bold text-gray-800">
+                {{ ', ' + pest.common_names[1].name }}
+                </span>
+                <span v-if="pest.common_names.length>2" class="fw-bold text-gray-800">
+                {{ ', ' + pest.common_names[2].name + '...' }}
+                </span>
+              </div>
+              <span v-else class="fw-bold text-gray-800">
+                {{ 'No common name provided' }}
               </span>
-              <span v-if="pest.common_name.length>1" class="fw-bold text-gray-800">
-                {{ ', ' + pest.common_name[1] }}
-              </span>
-              <span v-if="pest.common_name.length>2" class="fw-bold text-gray-800">
-                {{ ', ' + pest.common_name[2] + '...' }}
-              </span>
+
+              <!--              <span v-if="pest.common_names" v-for="name in pest.common_names" class="fw-bold text-gray-800">-->
+              <!--                {{ name.name + ' ' }}-->
+              <!--              </span>-->
+              <!--              {{pest.common_names}}-->
               <div>
                 <small v-if="pest.description.length<40" class="text-muted">{{ pest.description }}</small>
                 <small v-else class="text-muted">{{ pest.description.substring(0, 40) + ".." }}</small>
@@ -39,9 +49,9 @@
           <span>{{ 'Chapter ' + pest.chapter.number + ': ' + pest.chapter.title }}</span>
           <!--            v-if="!shortForm">{{ pest.responses_count | plural('Response', 'Responses') }}-->
         </td>
-<!--        <td class="p-4 text-gray-600">-->
-          <!--            v-if="!shortForm">{{ pest.participants_count | plural('Participant', 'Participants') }}-->
-<!--        </td>-->
+        <!--        <td class="p-4 text-gray-600">-->
+        <!--            v-if="!shortForm">{{ pest.participants_count | plural('Participant', 'Participants') }}-->
+        <!--        </td>-->
         <td class="p-4 text-end">
           <a href="#" class="btn btn-link" @click.stop.prevent="$emit('select', pest)">
             <icon name="arrow-forward"/>
@@ -54,13 +64,12 @@
 </template>
 
 <script>
-import icon from "./Icon.vue";
+import icon from "./helpers/Icon.vue";
 import User from "./helpers/User";
-import Pager from "./Pager.vue";
 
 export default {
   name: 'pestsList',
-  components: {icon, Pager},
+  components: {icon},
   props: {
     pests: {required: true, type: Array},
     shortForm: {required: false, type: Boolean, default: false},

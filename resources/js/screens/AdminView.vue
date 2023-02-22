@@ -4,35 +4,30 @@
       {{ 'Admin Panel' }}
     </h1>
     <div class="row">
-      <div class="col-sm-6 col-md-4 col-xl-3 border">
-        filters here?
+      <div class="col-sm-4">
+        <filters v-model="selectedChapters"/>
       </div>
       <div class="col-lg-8">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-pills mb-3 bg-white p-2 shadow-sm rounded border">
           <li class="nav-item">
-            <a class="nav-link fw-bold" :class="{ active: pestsActive }" aria-current="page" href="#" @click="select('pests')">Pests</a>
+            <a class="nav-link fw-bold" :class="{ active: active === 'pests' }" aria-current="page" href="#"
+               @click="active = 'pests'">Pests</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-bold" :class="{ active: glossaryActive }" href="#" @click="select('glossary')">Glossary</a>
+            <a class="nav-link fw-bold" :class="{ active: active === 'glossaries' }" href="#"
+               @click="active = 'glossaries'">Glossary</a>
           </li>
         </ul>
-        <pests-card :pests="pests" :loading="loading" :page="page" :lastPage="lastPage" :total="total"/>
-        <div class="px-4 py-4" v-if="lastPage > 1">
-          <dropdown-pager
-              class="card-footer"
-              :page="page"
-              :last-page="lastPage"
-              @change="pageChanged"
-          />
-        </div>
-<!--        <div class="card-footer px-4 py-3 bg-light d-flex justify-content-end" v-if="lastPage > 1">-->
-<!--          <dropdown-pager-->
-<!--              class="card-footer"-->
-<!--              :page="page"-->
-<!--              :last-page="lastPage"-->
-<!--              @change="pageChanged"-->
-<!--          />-->
-<!--        </div>-->
+        <pests-card v-if="active === 'pests'"/>
+        <glossary-card v-if="active === 'glossaries'"/>
+        <!--        <div class="card-footer px-4 py-3 bg-light d-flex justify-content-end" v-if="lastPage > 1">-->
+        <!--          <dropdown-pager-->
+        <!--              class="card-footer"-->
+        <!--              :page="page"-->
+        <!--              :last-page="lastPage"-->
+        <!--              @change="pageChanged"-->
+        <!--          />-->
+        <!--        </div>-->
       </div>
     </div>
   </div>
@@ -41,120 +36,81 @@
 <script>
 import axios from 'axios'
 import PestsCard from "../components/PestsCard.vue";
-import DropdownPager from "../components/DropdownPager.vue";
+import DropdownPager from "../components/helpers/DropdownPager.vue";
+import GlossaryCard from "../components/GlossaryCard.vue";
+import Filters from "../components/Filters.vue";
 
 export default {
   name: "AdminView.vue",
-  components: {PestsCard, DropdownPager},
+  components: {Filters, GlossaryCard, PestsCard, DropdownPager},
   data() {
     return {
       ready: true, // false
-      loading: true,
       pests: [],
-      glossary: [],
-      pestsActive: true,
-      glossaryActive: false,
-      page: 1,
-      lastPage: 1,
-      total:null,
+      glossaries: [],
+      selectedChapters: [],
+      active: 'pests',
+      total: null,
       requestToken: null,
     };
   },
 
   mounted() {
-    this.loadPests();
+    // this.setOptionsFromHistory();
+    // this.loadPests();
+    // this.loadGlossary();
   },
 
-  watch: {
-    // search(search) {
-    //   if (this.timer) {
-    //     clearTimeout(this.timer)
-    //   }
-    //   this.timer = setTimeout(() => {
-    //     this.updateHistory({search})
-    //     this.page = 1
-    //     this.loadPosts()
-    //   }, 500)
-    // },
-
-    page(page) {
-      // this.$router.push({
-      //   query: {
-      //     ...this.$route.query,
-      //     page,
-      //   },
-      // }).catch((e) => {
-      //   console.error(e)
-      // })
-      this.loadPests()
-    },
-  },
+  // watch: {
+  //   // search(search) {
+  //   //   if (this.timer) {
+  //   //     clearTimeout(this.timer)
+  //   //   }
+  //   //   this.timer = setTimeout(() => {
+  //   //     this.updateHistory({search})
+  //   //     this.page = 1
+  //   //     this.loadPosts()
+  //   //   }, 500)
+  //   // },
+  //
+  //   pestsPage(page) {
+  //     this.$router.push({
+  //       query: {
+  //         ...this.$route.query,
+  //         page,
+  //       },
+  //     }).catch((e) => {
+  //       console.error(e)
+  //     })
+  //     this.loadPests()
+  //   },
+  //
+  //   glossariesPage(page) {
+  //     this.$router.push({
+  //       query: {
+  //         ...this.$route.query,
+  //         page,
+  //       },
+  //     }).catch((e) => {
+  //       console.error(e)
+  //     })
+  //     this.loadGlossary()
+  //   },
+  //
+  //   // active() {
+  //   //   this.loadPests()
+  //   // }
+  // },
 
   methods: {
-    setOptionsFromHistory() {
-      if (this.$route.query.page) {
-        this.page = parseInt(this.$route.query.page)
-      }
 
-      this.ready = true
-    },
-
-    select(view) {
-      if (view === 'pests') {
-        this.pestsActive = true
-        this.glossaryActive = false
-      } else {
-        this.pestsActive = false
-        this.glossaryActive = true
-      }
-    },
-
-    async loadPests() {
-      if (!this.ready) {
-        return
-      }
-
-      this.loading = true
-
-      if (this.requestToken !== null) {
-        this.requestToken.cancel()
-      }
-
-      this.requestToken = axios.CancelToken.source()
-
-      try {
-        const url = '/pests'
-        const {data} = await axios.get(url, {
-          cancelToken: this.requestToken.token,
-          params: {
-            perPage: this.view === 'table' ? 50 : 20,
-            page: this.page,
-            // filters: this.filters,
-          },
-        })
-        this.pests = data.data
-        this.lastPage = data.last_page
-        this.total = data.total
-        // this.perPage      = this.observations.length
-
-        // if (this.page !== 1 && data.data.length === 0) {
-        //   this.page = 1
-        // }
-      } catch (e) {
-        // if (!axios.isCancel(e)) {
-        console.error(e)
-        // }
-      }
-
-      this.requestToken = null
-      this.loading = false
-    },
-
-    pageChanged(page) {
-      this.loading = true
-      this.page = page
-      // this.$scrollTo(0, 0)
-    },
+    // select(view) {
+    //   if (view === 'pests') {
+    //     this.active = 'pests'
+    //   } else {
+    //     this.active = 'glossaries'
+    //   }
+    // },
   }
 }
 </script>

@@ -2,13 +2,20 @@
   <div>
     <div class="card rounded-3 overflow-hidden">
       <div class="card-header border-bottom d-flex align-items-center">
-        <div class="flex-grow-1 text-muted mt-3" style="flex-direction: column">
-          <p>{{ 'Page ' + page + ' of ' + lastPage + '. ' + total + ' pests found' }}</p>
+        <!--        <div class="flex-grow-1 text-muted mt-3" style="flex-direction: column">-->
+        <!--          <p>{{ 'Page ' + page + ' of ' + lastPage + '. ' + total + ' pests found' }}</p>-->
+        <!--        </div>-->
+        <div class="flex-grow-1">
+          <input type="search"
+                 class="form-control"
+                 v-model="search"
+                 placeholder="Search"
+                 name="search"/>
         </div>
         <div class="flex-shrink-0">
-          <button class="btn btn-primary" type="button" @click.prevent="showpestsForm = true">
+          <button class="btn btn-primary" type="button" @click.prevent="showPestEditor = true">
             <icon name="add"/>
-            <span class="text-white">{{ 'New Pest' }}</span>
+            <span>{{ 'New Pest' }}</span>
           </button>
         </div>
       </div>
@@ -17,38 +24,95 @@
         <inline-spinner class="text-primary"/>
       </div>
       <div v-if="pests.length === 0 && !loading" class="p-4 d-flex align-items-center justify-content-center">
-        {{ 'No ' + selected + ' found' }}
+        {{ 'No pests found' }}
       </div>
       <pests-list v-if="pests.length > 0" :pests="pests" @select="goToPest"/>
     </div>
+    <div class="px-4 py-4" v-if="lastPage > 1">
+      <dropdown-pager
+          class="card-footer"
+          :page="page"
+          :last-page="lastPage"
+          @change="pageChanged"
+      />
+    </div>
 
-    <!--    <pests-form v-if="showpestsForm" @create="created" @close="showpestsForm = false"/>-->
+    <!--    <pests-form v-if="showPestsForm" @create="created" @close="showpestsForm = false"/>-->
+    <pest-editor v-if="showPestEditor" :pest="selectedPest" @create="created" @close="showPestEditor = false"/>
   </div>
 </template>
 
 <script>
-import icon from "./Icon.vue";
+import icon from "./helpers/Icon.vue";
 import InlineSpinner from "./helpers/InlineSpinner.vue";
 import PestsList from "./PestsList.vue";
+import axios from "axios";
+import DropdownPager from "./helpers/DropdownPager.vue";
+import pestEditor from "../screens/PestEditor.vue";
 
 
 export default {
   name: "PestsCard",
-  components: {PestsList, icon, InlineSpinner},
-  props: {
-    pests: {type: Array, default: false, required: false},
-    loading: {type: Boolean, default: true, required: false},
-    page: {type: Number, default: 1, required: false},
-    lastPage: {type: Number, default: 1, required: false},
-    total: {type: Number, default: 1, required: false},
-  },
+  components: {PestsList, icon, InlineSpinner, DropdownPager, pestEditor},
   data() {
     return {
-      showpestsForm: false,
+      ready: false,
+      loading: true,
+      pests: [],
+      selectedPest: null,
+      showPestEditor: false,
+      page: 1,
+      lastPage: 1,
+      total: 1,
+      perPage: 10,
+      requestToken: null,
+      search: '',
     }
   },
 
+  mounted() {
+    this.setOptionsFromHistory()
+    this.loadPests()
+  },
+
+  watch: {
+    search(search) {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(() => {
+        // this.updateHistory({search})
+        this.page = 1
+        this.loadPests()
+      }, 600)
+    },
+
+    page(page) {
+      // this.$router.push({
+      //   query: {
+      //     ...this.$route.query,
+      //     page,
+      //   },
+      // }).catch((e) => {
+      //   console.error(e)
+      // })
+      this.loadPests()
+    },
+
+    // active() {
+    //   this.loadPests()
+    // }
+  },
+
   methods: {
+    setOptionsFromHistory() {
+      // if (this.$route.query.page) {
+      //   this.page = parseInt(this.$route.query.page)
+      // }
+
+      this.ready = true
+    },
+
     goToPest(pest) {
       this.$router.push({
         path: `/app/pests/${pest.id}`,
@@ -70,6 +134,53 @@ export default {
     //   this.pests.unshift(pests)
     //   this.showpestsForm = false
     // },
+
+
+    async loadPests() {
+      if (!this.ready) {
+        return
+      }
+
+      this.loading = true
+
+      if (this.requestToken !== null) {
+        this.requestToken.cancel()
+      }
+
+      this.requestToken = axios.CancelToken.source()
+
+      try {
+        const {data} = await axios.get('/pests', {
+          cancelToken: this.requestToken.token,
+          params: {
+            search: this.search,
+            perPage: this.perPage,
+            page: this.page,
+            // filters: this.filters,
+          },
+        })
+
+        this.pests = data.data
+        this.lastPage = data.last_page
+        this.total = data.total
+        // this.perPage      = this.observations.length
+
+        // if (this.page !== 1 && data.data.length === 0) {
+        //   this.page = 1
+        // }
+      } catch (e) {
+        console.error(e)
+      }
+
+      this.requestToken = null
+      this.loading = false
+    },
+
+    pageChanged(page) {
+      this.loading = true
+      this.page = page
+      // this.$scrollTo(0, 0)
+    },
   },
 }
 </script>

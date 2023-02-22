@@ -12,8 +12,6 @@ class Pest extends Model
      * @var string[]
      */
     protected $fillable = [
-        'common_name',
-        'scientific_name',
         'description',
         'chapter',
         'major_hosts',
@@ -30,10 +28,15 @@ class Pest extends Model
         'feeding_target'
     ];
 
-    protected $casts = [
-        'common_name' => 'array',
-        'scientific_name' => 'array',
-    ];
+    public function commonNames(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CommonName::class);
+    }
+
+    public function scientificNames(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ScientificName::class);
+    }
 
     public function chapter(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

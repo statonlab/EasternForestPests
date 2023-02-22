@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand navbar-light fixed-top shadow-sm">
-      <div class="container">
+  <div class="bg-white">
+    <nav class="py-3 navbar navbar-expand-lg navbar-light shadow-sm">
         <a class="navbar-brand" href='#' @click="goto('/')">
           {{ 'Eastern Forest Pests' }}
         </a>
@@ -56,7 +55,6 @@
             <!--          @endguest-->
           </div>
         </div>
-      </div>
     </nav>
   </div>
 </template>
@@ -77,10 +75,10 @@ export default {
     // get the route from vue router, and highlight the appropriate button in the header
     // console.log(this.$router.currentRoute.rawValue.path)
     this.path = this.$route.path
-    console.log(this.$route)
-    console.log(this.$router)
+    // console.log(this.$route)
+    // console.log(this.$router)
 
-    console.log(this.$route.query)
+    // console.log(this.$route.query)
     // console.log(this.$router.history.current.path)
   },
   methods:

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\Responds;
+use App\Models\CommonName;
 use App\Models\Pest;
+use App\Models\ScientificName;
 use Illuminate\Http\Request;
 
 class PestController extends Controller
@@ -20,10 +22,23 @@ class PestController extends Controller
         // no authorization needed
         // request validation may be needed as filters are added
 
-        // several filters will be added
-        $pests = Pest::with('chapter')
+        $pests = Pest::with(['chapter', 'commonNames', 'scientificNames'])
             ->when(!empty($request->search), function ($query) use ($request) {
-                $query->where('common_name', 'LIKE', $request->search . '%');
+                $query->whereHas('commonNames', function ($query) use ($request) {
+                    $query->where('name', 'like', $request->search . '%');
+                });
+                $query->orWhereHas('scientificNames', function ($query) use ($request) {
+                    $query->where('name', 'like', $request->search . '%');
+                });
+                $query->orWhere('description', 'like', '%' . $request->search . '%');
+                $query->orWhere('major_hosts', 'like', '%' . $request->search . '%');
+                $query->orWhere('key_features', 'like', '%' . $request->search . '%');
+                $query->orWhere('control', 'like', '%' . $request->search . '%');
+                $query->orWhere('other_info_title', 'like', '%' . $request->search . '%');
+                $query->orWhere('other_info_body', 'like', '%' . $request->search . '%');
+                $query->orWhere('pest_type', 'like', '%' . $request->search . '%');
+                $query->orWhere('disease_visiblity', 'like', '%' . $request->search . '%');
+                $query->orWhere('feeding_target', 'like', '%' . $request->search . '%');
             })->paginate(5);
 
         return $this->success($pests);
@@ -33,7 +48,7 @@ class PestController extends Controller
     {
         // no authorization needed
         // request validation may be needed as filters are added
-        $pests = Pest::find($pest);
+        $pest = Pest::find($pest);
 
         return $this->success($pest);
     }
@@ -44,8 +59,6 @@ class PestController extends Controller
         // validate request
 
         $pest = Pest::create([
-            'common_name' => $request->common_name,
-            'scientific_name' => $request->scientific_name,
             'description' => $request->description,
             'chapter' => $request->chapter,
             'major_hosts' => $request->major_hosts,
@@ -61,6 +74,20 @@ class PestController extends Controller
             'disease_visiblity' => $request->disease_visiblity,
             'feeding_target' => $request->feeding_target
         ]);
+
+        foreach($request->scientific_names as $name) {
+            ScientificName::create([
+                'name' => $name,
+                'pest_id' => $pest->id
+            ]);
+        }
+
+        foreach($request->common_names as $name) {
+            CommonName::create([
+                'name' => $name,
+                'pest_id' => $pest->id
+            ]);
+        }
 
         return $this->created($pest);
     }

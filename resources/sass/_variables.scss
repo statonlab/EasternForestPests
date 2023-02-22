@@ -24,6 +24,7 @@ $font-weight-bolder: 800;
 $headings-font-weight: $font-weight-bold;
 
 // Colors
+$min-contrast-ratio:   3.0;
 
 $blue: #007bff;
 $indigo: #6610f2;
@@ -57,9 +58,10 @@ $danger: $red;
 // Body
 $body-bg: lighten($gray-100, 1%);
 
-$box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
-$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
-$box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
+//$box-shadow-xs: 0 .125rem .25rem rgba($black, .075) !default;
+//$box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
+//$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+//$box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
 
 // Sidebar
 $sidebar-width: 250px;

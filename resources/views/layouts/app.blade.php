@@ -80,9 +80,6 @@
     {{--            </div>--}}
     {{--        </nav>--}}
 
-    <div id="app">
-        <app></app>
-    </div>
     @yield('content')
     {{--        <div class="d-flex justify-content-center align-items-center" style="flex-direction: column">--}}
     {{--            <span>This site is under construction! Come back later and I'll look more presentable.</span>--}}

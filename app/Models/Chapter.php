@@ -10,6 +10,12 @@ class Chapter extends Model
     protected $fillable = [
         'number',
         'title',
-        'page_number'
+        'page_number',
+        'color'
     ];
+
+    public function pests(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Pest::class);
+    }
 }

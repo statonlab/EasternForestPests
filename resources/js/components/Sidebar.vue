@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Icon from "./Icon.vue";
+import Icon from "./helpers/Icon.vue";
 
 export default {
   name: "Sidebar.vue",

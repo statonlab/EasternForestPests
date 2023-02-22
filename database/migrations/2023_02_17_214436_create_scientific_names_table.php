@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chapters', function (Blueprint $table) {
+        Schema::create('scientific_names', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->string('title');
-            $table->integer('page_number');
-            $table->string('color', 10);
+            $table->string('name');
+            $table->foreignId('pest_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapters');
+        Schema::dropIfExists('scientific_names');
     }
 };
