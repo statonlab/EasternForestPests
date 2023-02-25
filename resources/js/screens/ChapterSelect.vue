@@ -1,36 +1,30 @@
 <template>
-  <div class="form-group">
-    <label>{{ 'What chapter is this pest location in?' }}</label>
-    <select class="form-control" v-model="this.chapter">
-      <option disabled :value="null">{{ 'select a chapter' }}</option>
-      <option v-for="chapter in chapters" :value="chapter">
-        {{ `Chapter ${chapter.id}: ${chapter.title}` }}
-      </option>
-    </select>
-    <!--    <span class="form-text text-danger" v-if="form.errors.has('chapter')">-->
-    <!--              {{ form.errors.first('chapter') }}-->
-    <!--            </span>-->
+  <div>
+
   </div>
 </template>
 <script>
 import axios from "axios";
+import Required from "../components/helpers/Required.vue";
 
 export default {
   name: 'chapter-select',
-  props: {
-    value: {
-      required: false,
-      type: Object,
-      default: null,
-    },
-    // chapters: {},
-    // form: {type: Function}
-  },
+  components: {Required},
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+  // props: {
+  //   value: {
+  //     required: true,
+  //   },
+  //   // chapters: {},
+  //   // form: {type: Function}
+  // },
 
   data() {
     return {
       loading: false,
       chapters: null,
+      selected: '',
     }
   },
 
@@ -38,28 +32,18 @@ export default {
     this.loadChapters()
   },
 
+  watch: {
+    selected(selected) {
+      // this.$emit('input', selected)
+    this.$emit('update:modelValue', selected)
+    }
+  },
+
   methods: {
-    loadChapters() {
-      this.loading = true
-      axios.get(`/chapters`)
-          .then(({data}) => {
-            this.chapters = data
-          })
-          .catch(e => {
-            console.error(e)
-          })
-          .finally(() => {
-            this.loading = false
-          })
-    },
+
   }
 }
 </script>
 <style>
-.img-max-w-400 img {
-  max-width: 800px !important;
-  height: auto !important;
-  display: block;
-  /*margin: 0 auto;*/
-}
+
 </style>

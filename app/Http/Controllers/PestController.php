@@ -37,7 +37,8 @@ class PestController extends Controller
                 $query->orWhere('other_info_title', 'like', '%' . $request->search . '%');
                 $query->orWhere('other_info_body', 'like', '%' . $request->search . '%');
                 $query->orWhere('pest_type', 'like', '%' . $request->search . '%');
-                $query->orWhere('disease_visiblity', 'like', '%' . $request->search . '%');
+//                $query->orWhere('disease_visibility', 'like', '%' . $request->search . '%');
+                // add visiblity query...
                 $query->orWhere('feeding_target', 'like', '%' . $request->search . '%');
             })->paginate(5);
 
@@ -59,6 +60,16 @@ class PestController extends Controller
         // validate request
 
         $pest = Pest::create([
+            'pest_type' => $request->pest_type,
+            'is_pest' => $request->is_pest,
+            'is_disease' => $request->is_disease,
+            'affects_deciduous' => $request->affects_deciduous,
+            'affects_conifer' => $request->affects_conifer,
+            'visible_in_roots' => $request->visible_in_roots,
+            'visible_in_trunk' => $request->visible_in_trunk,
+            'visible_in_foliage' => $request->visible_in_foliage,
+            'feeding_target' => $request->feeding_target,
+            'scientific_name' => $request->scientific_name,
             'description' => $request->description,
             'chapter' => $request->chapter,
             'major_hosts' => $request->major_hosts,
@@ -66,23 +77,16 @@ class PestController extends Controller
             'control' => $request->control,
             'other_info_title' => $request->other_info_title,
             'other_info_body' => $request->other_info_body,
-            'pest_type' => $request->pest_type,
-            'affects_deciduous' => $request->affects_deciduous,
-            'affects_conifer' => $request->affects_conifer,
-            'is_disease' => $request->is_disease,
-            'is_pest' => $request->is_pest,
-            'disease_visiblity' => $request->disease_visiblity,
-            'feeding_target' => $request->feeding_target
         ]);
 
-        foreach($request->scientific_names as $name) {
+        foreach ($request->scientific_names as $name) {
             ScientificName::create([
                 'name' => $name,
                 'pest_id' => $pest->id
             ]);
         }
 
-        foreach($request->common_names as $name) {
+        foreach ($request->common_names as $name) {
             CommonName::create([
                 'name' => $name,
                 'pest_id' => $pest->id
@@ -98,8 +102,15 @@ class PestController extends Controller
         // validate request
 
         $pest->update([
-            'common_name' => $request->common_name,
-            'scientific_name' => $request->scientific_name,
+            'pest_type' => $request->pest_type,
+            'is_pest' => $request->is_pest,
+            'is_disease' => $request->is_disease,
+            'affects_deciduous' => $request->affects_deciduous,
+            'affects_conifer' => $request->affects_conifer,
+            'visible_in_roots' => $request->visible_in_roots,
+            'visible_in_trunk' => $request->visible_in_trunk,
+            'visible_in_foliage' => $request->visible_in_foliage,
+            'feeding_target' => $request->feeding_target,
             'description' => $request->description,
             'chapter' => $request->chapter,
             'major_hosts' => $request->major_hosts,
@@ -107,13 +118,6 @@ class PestController extends Controller
             'control' => $request->control,
             'other_info_title' => $request->other_info_title,
             'other_info_body' => $request->other_info_body,
-            'pest_type' => $request->pest_type,
-            'affects_deciduous' => $request->affects_deciduous,
-            'affects_conifer' => $request->affects_conifer,
-            'is_disease' => $request->is_disease,
-            'is_pest' => $request->is_pest,
-            'disease_visiblity' => $request->disease_visiblity,
-            'feeding_target' => $request->feeding_target
         ]);
 
         return $this->created($pest);

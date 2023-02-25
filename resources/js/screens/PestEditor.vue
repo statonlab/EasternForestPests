@@ -1,50 +1,152 @@
 <template>
   <modal :xlarge="true" class="h-100">
-    <form action="#" @submit.prevent="submit()">
+    <form action="#" @submit.prevent="submit()" autocomplete="off">
       <modal-card>
         <modal-header>
           <modal-title v-if="pest">Update "{{ pest.title }}"</modal-title>
           <modal-title v-else>Pest Editor</modal-title>
           <close @click="$emit('close')"/>
         </modal-header>
-        <modal-body>
-          <chapter-select :value="form.chapter"/>
+        <modal-body class="bold-labels">
           <div class="form-group">
-            <label for="title">
-              Title
+            <label class="form-label">{{ 'What chapter is this pest location in?' }}
               <required/>
             </label>
-            <input id="title"
-                   name="title"
-                   type="text"
-                   :class="['form-control',  {'is-invalid': form.errors.has('title')}]"
-                   v-model="form.title"
-                   autofocus>
-            <small class="form-text text-danger" v-if="form.errors.has('title')">
-              {{ form.errors.first('title') }}
+            <select class="form-select" v-model="form.chapter">
+              <option disabled :value="null">{{ 'Select a chapter' }}</option>
+              <option v-for="chapter in chapters" :value="chapter.id">
+                {{ `Chapter ${chapter.id}: ${chapter.title}` }}
+              </option>
+            </select>
+            <small class="form-text text-danger" v-if="form.errors.has('chapter')">
+              {{ form.errors.first('chapter') }}
             </small>
           </div>
 
           <div class="form-group">
-            <label for="description">
-              {{ 'documentation.description' }}
+            <label class="form-label">{{ 'Is this an insect, a disease, or a complex of both?' }}
               <required/>
             </label>
-            <input id="description"
-                   type="text"
-                   name="description"
-                   class="form-control"
-                   v-model="form.description">
-            <p class="form-text text-danger" v-if="form.errors.has('description')">
-              {{ form.errors.first('description') }}
-            </p>
+            <select class="form-select" v-model="form.pestType">
+              <option disabled :value="null">{{ 'Select an option' }}</option>
+              <option value="insect">
+                {{ `Insect` }}
+              </option>
+              <option value="disease">
+                {{ `Disease` }}
+              </option>
+              <option value="both">
+                {{ `Both` }}
+              </option>
+            </select>
+            <small class="form-text text-danger" v-if="form.errors.has('pestType')">
+              {{ form.errors.first('pestType') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ 'Does this pest affect deciduous trees, conifer, or both?' }}
+              <required/>
+            </label>
+            <select class="form-select" v-model="form.treeAffected">
+              <option disabled :value="null">{{ 'Select a chapter' }}</option>
+              <option value="deciduous">
+                {{ `Insect` }}
+              </option>
+              <option value="conifer">
+                {{ `Disease` }}
+              </option>
+              <option value="both">
+                {{ `Both` }}
+              </option>
+            </select>
+            <small class="form-text text-danger" v-if="form.errors.has('pestType')">
+              {{ form.errors.first('pestType') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ 'Where is this pest visible?' }}
+              <required/>
+            </label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="rootsCheckbox"
+                     v-model="form.visible_in_roots">
+              Roots
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="trunkCheckbox" v-model="form.visible_in_trunk">
+              Stem/Trunk
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="foliageCheckbox"
+                     v-model="form.visible_in_foliage">
+              Foliage
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="common_name">
+              Common name(s)
+              <required/>
+            </label>
+            <div class="mb-2 d-flex input-group" style="flex-direction: row"
+                 v-for="(common_name, index) in form.common_names">
+              <button v-if="index !== 0" class="btn btn-outline-danger" type="button"
+                      :id="`remove_common_name_button_${index}`"
+                      @click.prevent="form.common_names.splice(index,1)">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+              <input v-model="form.common_names[index]"
+                     :key="index"
+                     :id="`common_name_${index}`"
+                     :name="`common_name_${index}`"
+                     type="text"
+                     class="form-control"
+                      ref="common_name">
+            </div>
+            <button class="btn btn-outline-primary" @click.prevent="addCommonName()">
+              <ion-icon name="add-outline"></ion-icon>
+              <span> Add another common name</span>
+            </button>
+            <small class="form-text text-danger" v-if="form.errors.has('common_names')">
+              {{ form.errors.first('common_names') }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="common_name">
+              Scientific name(s)
+              <required/>
+            </label>
+            <div class="mb-2 d-flex input-group" style="flex-direction: row"
+                 v-for="(scientific_name, index) in form.scientific_names">
+              <button v-if="index !== 0" class="btn btn-outline-danger" type="button"
+                      :id="`remove_scientific_name_button_${index}`"
+                      @click.prevent="form.scientific_names.splice(index,1)">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+              <input v-model="form.scientific_names[index]"
+                     :key="index"
+                     :id="`scientific_name_${index}`"
+                     :name="`scientific_name_${index}`"
+                     type="text"
+                     class="form-control"
+                     ref="scientific_name">
+            </div>
+            <button class="btn btn-outline-primary" @click.prevent="addScientificName()">
+              <ion-icon name="add-outline"></ion-icon>
+              <span> Add another scientific name</span>
+            </button>
+            <small class="form-text text-danger" v-if="form.errors.has('scientific_names')">
+              {{ form.errors.first('scientific_names') }}
+            </small>
           </div>
 
           <div class="form-group">
             <label>
               Text
             </label>
-            EDITOR GOES HERE
             <!--            <editor id="text"-->
             <!--                    ref="editor"-->
             <!--                    height="600px"-->
@@ -52,10 +154,12 @@
             <!--                    :initialValue="post ? post.text : ''"-->
             <!--                    :options="editorOptions"-->
             <!--            />-->
-            <span class="form-text text-danger" v-if="form.errors.has('text')">
-              {{ form.errors.first('text') }}
+            <span class="form-text text-danger" v-if="form.errors.has('editor')">
+              {{ form.errors.first('editor') }}
             </span>
           </div>
+<!--          <editor-content :editor="form.editor" />-->
+
         </modal-body>
         <modal-footer>
           <button type="submit" class="btn btn-primary" :disabled="loading">
@@ -69,73 +173,12 @@
       </modal-card>
     </form>
   </modal>
-  <!--  <div>-->
-  <!--    <div v-if="!loading">-->
-  <!--      <div class="mb-3 d-flex align-items-center bg-white border-bottom mt-n4 py-4 mx-n4 px-4">-->
-  <!--        <div class="flex-grow-1 d-flex align-items-center">-->
-  <!--          <div>-->
-  <!--            <button @click=$router.go(-1) class="btn btn-link text-muted mr-1">-->
-  <!--              <icon name="arrow-back" class="text-muted"/>-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--          <div>-->
-  <!--            <div class="d-flex align-items-center">-->
-  <!--              <h1 class="title">{{ pest.title }}</h1>-->
-  <!--              &lt;!&ndash;              <pest-categories-row :pest="pest"/>&ndash;&gt;-->
-  <!--            </div>-->
-  <!--            <div class="text-muted">-->
-  <!--              {{ pest.description }}-->
-  <!--            </div>-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--        <div class="d-flex align-items-center flex-shrink-0 pl-1">-->
-  <!--          <div class="btn-group">-->
-  <!--            <button class="btn btn-white shadow-sm" @click.prevent="showpestForm = true">-->
-  <!--              <icon name="create" class="text-muted"/>-->
-  <!--              <span>{{ 'general.edit' }}</span>-->
-  <!--            </button>-->
-  <!--            <button class="btn btn-white shadow-sm" @click.prevent="togglePublic(pest)">-->
-  <!--              <icon name="information-circle"-->
-  <!--                    :class="{'text-danger': !pest.is_public, 'text-success': pest.is_public}"/>-->
-  <!--              <span>{{ pest.is_public ? 'documentation.unpublish' : 'documentation.publish' }}</span>-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--      <div class="container">-->
-  <!--        <div class="row">-->
-  <!--          <div class="col-12">-->
-  <!--            <div class="card">-->
-  <!--              <div class="card-body">-->
-  <!--                &lt;!&ndash;                <viewer :initialValue="viewerText" class="img-max-w-400"/>&ndash;&gt;-->
-  <!--              </div>-->
-  <!--            </div>-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    <div v-else-if="!loading && !pest">-->
-  <!--      <div class="card border border-danger">-->
-  <!--        <div class="card-body">-->
-  <!--          {{ $t('errors.notFound') }}-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    <div v-else-if="loading">-->
-  <!--      <div class="d-flex align-items-center justify-content-center">-->
-  <!--        <inline-spinner class="text-primary"/>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    &lt;!&ndash;    <pest-form :pest="pest" v-if="showpestForm" @update="updated()" @close="showpestForm = false"/>&ndash;&gt;-->
-  <!--  </div>-->
 </template>
 
 <script>
 import Form from "../components/helpers/Form";
 import User from "../components/helpers/User";
 import InlineSpinner from "../components/helpers/InlineSpinner.vue";
-// import pestForm from '../../forms/pestForm'
-// import {Viewer} from '@toast-ui/vue-editor'
 import axios from "axios";
 import modal from "../components/helpers/Modal.vue";
 import modalHeader from "../components/helpers/ModalHeader.vue";
@@ -146,15 +189,19 @@ import modalFooter from "../components/helpers/ModalFooter.vue";
 import close from "../components/helpers/Close.vue";
 import required from "../components/helpers/Required.vue";
 import ChapterSelect from "./ChapterSelect.vue";
+import icon from "../components/helpers/Icon.vue";
+// import { Editor, EditorContent } from '@tiptap/vue-3'
+// import StarterKit from '@tiptap/starter-kit'
+import TipTip from "../components/TipTip.vue";
+
 
 export default {
   name: 'PestEditor',
 
   components: {
+    icon,
     ChapterSelect,
-    // pestForm,
     InlineSpinner,
-    // Viewer,
     modal,
     modalHeader,
     modalTitle,
@@ -162,7 +209,10 @@ export default {
     modalBody,
     modalFooter,
     close,
-    required
+    required,
+    TipTip,
+    // Editor,
+    // EditorContent
   },
 
   props: {
@@ -175,21 +225,39 @@ export default {
       loading: true,
       chapters: null,
       // pest: null,
-      showpestForm: false,
-      viewerText: '',
       form: new Form({
         chapter: null,
-        title: '',
-        description: '',
-        text: '',
+        pestType: null,
+        isPest: false,
+        isDisease: false,
+        treeAffected: null,
+        affectsDeciduous: false,
+        affectsConifer: false,
+        visible_in_roots: false,
+        visible_in_trunk: false,
+        visible_in_foliage: false,
+        common_names: [''],
+        scientific_names: [''],
+        // editor: null,
       }),
     }
   },
 
   mounted() {
     this.loadPest()
-    // this.loadChapters()
+    this.loadChapters()
+
+    // this.editor = new Editor({
+    //   content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
+    //   extensions: [
+    //     StarterKit,
+    //   ],
+    // })
   },
+
+  // beforeUnmount() {
+  //   this.editor.destroy()
+  // },
 
   methods: {
     async loadPest() {
@@ -198,10 +266,33 @@ export default {
         try {
           const {data} = await axios.get(`/web/pests/${id}`)
           this.pest = data
-          this.viewerText = this.pest.text
         } catch (e) {
           console.error(e)
         }
+      }
+      this.loading = false
+    },
+
+    // loadChapters() {
+    //   this.loading = true
+    //   axios.get(`/chapters`)
+    //       .then(({data}) => {
+    //         this.chapters = data
+    //       })
+    //       .catch(e => {
+    //         console.error(e)
+    //       })
+    //       .finally(() => {
+    //         this.loading = false
+    //       })
+    // },
+
+    async loadChapters() {
+      try {
+        const {data} = await axios.get(`/chapters`)
+        this.chapters = data
+      } catch (e) {
+        console.error(e)
       }
       this.loading = false
     },
@@ -230,8 +321,25 @@ export default {
 
     updated() {
       this.loading = true
-      this.loadpest()
-      this.showpestForm = false
+      this.loadPest()
+    },
+
+    addCommonName() {
+      this.form.common_names.push('')
+      var index = this.form.common_names.length - 1
+
+      this.$nextTick(() => {
+        this.$refs.common_name[index].focus()
+      })
+    },
+
+    addScientificName() {
+      this.form.scientific_names.push('')
+      var index = this.form.scientific_names.length - 1
+
+      this.$nextTick(() => {
+        this.$refs.scientific_name[index].focus()
+      })
     },
   },
 }

@@ -14,18 +14,20 @@ class Pest extends Model
     protected $fillable = [
         'description',
         'chapter',
+        'pest_type',
+        'is_pest',
+        'is_disease',
+        'affects_deciduous',
+        'affects_conifer',
+        'visible_in_roots',
+        'visible_in_trunk',
+        'visible_in_foliage',
+        'feeding_target',
         'major_hosts',
         'key_features',
         'control',
         'other_info_title',
         'other_info_body',
-        'pest_type',
-        'affects_deciduous',
-        'affects_conifer',
-        'is_disease',
-        'is_pest',
-        'disease_visiblity',
-        'feeding_target'
     ];
 
     public function commonNames(): \Illuminate\Database\Eloquent\Relations\HasMany
