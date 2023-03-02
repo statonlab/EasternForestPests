@@ -140,3 +140,24 @@
 .btn.font-weight-normal {
   font-weight: 400 !important;
 }
+
+.btn-control {
+  &:hover {
+    background-color: var(--bs-btn-bg);
+    color: var(--bs-btn-color);
+  }
+  &:focus {
+    background-color: var(--bs-btn-bg);
+    color: var(--bs-btn-color);
+  }
+  &.active {
+    &:hover {
+      background-color: var(--bs-btn-active-bg);
+      color: var(--bs-btn-active-color);
+    }
+    &:focus {
+      background-color: var(--bs-btn-active-bg);
+      color: var(--bs-btn-active-color);
+    }
+  }
+}

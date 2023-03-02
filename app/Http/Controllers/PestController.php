@@ -25,10 +25,10 @@ class PestController extends Controller
         $pests = Pest::with(['chapter', 'commonNames', 'scientificNames'])
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->whereHas('commonNames', function ($query) use ($request) {
-                    $query->where('name', 'like', $request->search . '%');
+                    $query->where('name', 'like', '%'. $request->search . '%');
                 });
                 $query->orWhereHas('scientificNames', function ($query) use ($request) {
-                    $query->where('name', 'like', $request->search . '%');
+                    $query->where('name', 'like', '%'. $request->search . '%');
                 });
                 $query->orWhere('description', 'like', '%' . $request->search . '%');
                 $query->orWhere('major_hosts', 'like', '%' . $request->search . '%');
@@ -60,6 +60,8 @@ class PestController extends Controller
         // validate request
 
         $pest = Pest::create([
+            'description' => $request->description,
+            'chapter_id' => $request->chapter_id,
             'pest_type' => $request->pest_type,
             'is_pest' => $request->is_pest,
             'is_disease' => $request->is_disease,
@@ -69,9 +71,6 @@ class PestController extends Controller
             'visible_in_trunk' => $request->visible_in_trunk,
             'visible_in_foliage' => $request->visible_in_foliage,
             'feeding_target' => $request->feeding_target,
-            'scientific_name' => $request->scientific_name,
-            'description' => $request->description,
-            'chapter' => $request->chapter,
             'major_hosts' => $request->major_hosts,
             'key_features' => $request->key_features,
             'control' => $request->control,
@@ -79,18 +78,28 @@ class PestController extends Controller
             'other_info_body' => $request->other_info_body,
         ]);
 
-        foreach ($request->scientific_names as $name) {
-            ScientificName::create([
-                'name' => $name,
-                'pest_id' => $pest->id
-            ]);
+        if (!empty($request->scientific_names)) {
+            foreach ($request->scientific_names as $name) {
+                if (!empty($name)) {
+                    info($name);
+                    ScientificName::create([
+                        'name' => $name,
+                        'pest_id' => $pest->id
+                    ]);
+                }
+            }
         }
 
-        foreach ($request->common_names as $name) {
-            CommonName::create([
-                'name' => $name,
-                'pest_id' => $pest->id
-            ]);
+        if (!empty($request->common_names)) {
+            foreach ($request->common_names as $name) {
+                if (!empty($name)) {
+                    info($name);
+                    CommonName::create([
+                        'name' => $name,
+                        'pest_id' => $pest->id
+                    ]);
+                }
+            }
         }
 
         return $this->created($pest);
@@ -102,6 +111,8 @@ class PestController extends Controller
         // validate request
 
         $pest->update([
+            'description' => $request->description,
+            'chapter_id' => $request->chapter_id,
             'pest_type' => $request->pest_type,
             'is_pest' => $request->is_pest,
             'is_disease' => $request->is_disease,
@@ -111,8 +122,6 @@ class PestController extends Controller
             'visible_in_trunk' => $request->visible_in_trunk,
             'visible_in_foliage' => $request->visible_in_foliage,
             'feeding_target' => $request->feeding_target,
-            'description' => $request->description,
-            'chapter' => $request->chapter,
             'major_hosts' => $request->major_hosts,
             'key_features' => $request->key_features,
             'control' => $request->control,

@@ -5,6 +5,7 @@ import('./bootstrap')
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
 import App from './screens/App.vue'
+import Notifications from '@kyvg/vue3-notification'
 import ExampleComponent from "./components/ExampleComponent.vue";
 import AdminView from "./screens/AdminView.vue";
 import Splash from "./screens/Splash.vue";
@@ -53,4 +54,5 @@ const router = createRouter({
 
 createApp(App)
     .use(router)
+    .use(Notifications)
     .mount('#app')

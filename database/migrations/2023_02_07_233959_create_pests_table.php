@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('pests', function (Blueprint $table) {
             $table->id();
             $table->string('description')->nullable();
-            $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('chapter_id')->nullable();
             $table->string('pest_type')->nullable();
             $table->boolean('is_pest')->nullable();
             $table->boolean('is_disease')->nullable();
@@ -25,11 +25,12 @@ return new class extends Migration {
             $table->string('visible_in_trunk')->nullable();
             $table->string('visible_in_foliage')->nullable();
             $table->string('feeding_target')->nullable();
-            $table->string('major_hosts')->nullable();
-            $table->string('key_features')->nullable();
-            $table->string('control')->nullable();
+            $table->json('major_hosts')->nullable();
+            $table->json('key_features')->nullable();
+            $table->json('control')->nullable();
             $table->string('other_info_title')->nullable();
-            $table->string('other_info_body')->nullable();
+            $table->json('other_info_body')->nullable();
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
     }

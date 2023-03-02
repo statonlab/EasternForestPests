@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CommonName extends Model
 {
     protected $fillable = [
-        'names',
+        'name',
         'pest_id'
     ];
 

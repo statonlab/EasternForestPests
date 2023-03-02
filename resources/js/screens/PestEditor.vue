@@ -1,6 +1,6 @@
 <template>
-  <modal :xlarge="true" class="h-100">
-    <form action="#" @submit.prevent="submit()" autocomplete="off">
+  <modal :large="true" class="h-100">
+    <form action="#" @submit.prevent="create()" autocomplete="off">
       <modal-card>
         <modal-header>
           <modal-title v-if="pest">Update "{{ pest.title }}"</modal-title>
@@ -12,7 +12,7 @@
             <label class="form-label">{{ 'What chapter is this pest location in?' }}
               <required/>
             </label>
-            <select class="form-select" v-model="form.chapter">
+            <select class="form-select" v-model="form.chapter_id">
               <option disabled :value="null">{{ 'Select a chapter' }}</option>
               <option v-for="chapter in chapters" :value="chapter.id">
                 {{ `Chapter ${chapter.id}: ${chapter.title}` }}
@@ -27,7 +27,7 @@
             <label class="form-label">{{ 'Is this an insect, a disease, or a complex of both?' }}
               <required/>
             </label>
-            <select class="form-select" v-model="form.pestType">
+            <select class="form-select" v-model="form.pest_type">
               <option disabled :value="null">{{ 'Select an option' }}</option>
               <option value="insect">
                 {{ `Insect` }}
@@ -39,8 +39,8 @@
                 {{ `Both` }}
               </option>
             </select>
-            <small class="form-text text-danger" v-if="form.errors.has('pestType')">
-              {{ form.errors.first('pestType') }}
+            <small class="form-text text-danger" v-if="form.errors.has('pest_type')">
+              {{ form.errors.first('pest_type') }}
             </small>
           </div>
 
@@ -48,25 +48,25 @@
             <label class="form-label">{{ 'Does this pest affect deciduous trees, conifer, or both?' }}
               <required/>
             </label>
-            <select class="form-select" v-model="form.treeAffected">
+            <select class="form-select" v-model="form.tree_affected">
               <option disabled :value="null">{{ 'Select a chapter' }}</option>
               <option value="deciduous">
-                {{ `Insect` }}
+                {{ `Deciduous` }}
               </option>
               <option value="conifer">
-                {{ `Disease` }}
+                {{ `Conifer` }}
               </option>
               <option value="both">
                 {{ `Both` }}
               </option>
             </select>
-            <small class="form-text text-danger" v-if="form.errors.has('pestType')">
-              {{ form.errors.first('pestType') }}
+            <small class="form-text text-danger" v-if="form.errors.has('pest_type')">
+              {{ form.errors.first('pest_type') }}
             </small>
           </div>
 
           <div class="form-group">
-            <label class="form-label">{{ 'Where is this pest visible?' }}
+            <label class="form-label">{{ 'Where is this pest visible/where does this pest affect?' }}
               <required/>
             </label>
             <div class="form-check">
@@ -103,7 +103,7 @@
                      :name="`common_name_${index}`"
                      type="text"
                      class="form-control"
-                      ref="common_name">
+                     ref="common_name">
             </div>
             <button class="btn btn-outline-primary" @click.prevent="addCommonName()">
               <ion-icon name="add-outline"></ion-icon>
@@ -145,20 +145,72 @@
 
           <div class="form-group">
             <label>
-              Text
+              Description (goes directly under names)
             </label>
-            <!--            <editor id="text"-->
-            <!--                    ref="editor"-->
-            <!--                    height="600px"-->
-            <!--                    initialEditType="wysiwyg"-->
-            <!--                    :initialValue="post ? post.text : ''"-->
-            <!--                    :options="editorOptions"-->
-            <!--            />-->
-            <span class="form-text text-danger" v-if="form.errors.has('editor')">
-              {{ form.errors.first('editor') }}
+            <input v-model="form.description"
+                   id="description"
+                   name="description"
+                   type="text"
+                   class="form-control">
+            <span class="form-text text-danger" v-if="form.errors.has('description')">
+              {{ form.errors.first('description') }}
             </span>
           </div>
-<!--          <editor-content :editor="form.editor" />-->
+
+          <div class="form-group">
+            <label>
+              Major Hosts
+            </label>
+            <tip-tap :content="form.major_hosts" @input="form.major_hosts = $event.content"/>
+            <span class="form-text text-danger" v-if="form.errors.has('major_hosts')">
+              {{ form.errors.first('major_hosts') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Key Features
+            </label>
+            <tip-tap :content="form.key_features" @input="form.key_features = $event.content"/>
+            <span class="form-text text-danger" v-if="form.errors.has('key_features')">
+              {{ form.errors.first('key_features') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Control/Management
+            </label>
+            <tip-tap :content="form.control" @input="form.control = $event.content"/>
+            <span class="form-text text-danger" v-if="form.errors.has('control')">
+              {{ form.errors.first('control') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Other Info (Title)
+            </label>
+            <input v-model="form.other_info_title"
+                   id="other_info_title"
+                   name="other_info_title"
+                   type="text"
+                   class="form-control">
+            <span class="form-text text-danger" v-if="form.errors.has('other_info_title')">
+              {{ form.errors.first('other_info_title') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Other Info (Body)
+            </label>
+            <tip-tap :content="form.other_info_body" @input="form.other_info_body = $event.content"/>
+            <span class="form-text text-danger" v-if="form.errors.has('other_info_body')">
+              {{ form.errors.first('other_info_body') }}
+            </span>
+          </div>
+
 
         </modal-body>
         <modal-footer>
@@ -190,9 +242,7 @@ import close from "../components/helpers/Close.vue";
 import required from "../components/helpers/Required.vue";
 import ChapterSelect from "./ChapterSelect.vue";
 import icon from "../components/helpers/Icon.vue";
-// import { Editor, EditorContent } from '@tiptap/vue-3'
-// import StarterKit from '@tiptap/starter-kit'
-import TipTip from "../components/TipTip.vue";
+import TipTap from "../components/TipTap.vue";
 
 
 export default {
@@ -210,9 +260,7 @@ export default {
     modalFooter,
     close,
     required,
-    TipTip,
-    // Editor,
-    // EditorContent
+    TipTap,
   },
 
   props: {
@@ -226,19 +274,24 @@ export default {
       chapters: null,
       // pest: null,
       form: new Form({
-        chapter: null,
-        pestType: null,
-        isPest: false,
-        isDisease: false,
-        treeAffected: null,
-        affectsDeciduous: false,
-        affectsConifer: false,
+        chapter_id: null,
+        pest_type: null,
+        is_pest: false,
+        is_disease: false,
+        tree_affected: null,
+        affects_deciduous: false,
+        affects_conifer: false,
         visible_in_roots: false,
         visible_in_trunk: false,
         visible_in_foliage: false,
         common_names: [''],
         scientific_names: [''],
-        // editor: null,
+        description: null,
+        major_hosts: null,
+        key_features: null,
+        control: null,
+        other_info_title: null,
+        other_info_body: null,
       }),
     }
   },
@@ -246,25 +299,14 @@ export default {
   mounted() {
     this.loadPest()
     this.loadChapters()
-
-    // this.editor = new Editor({
-    //   content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
-    //   extensions: [
-    //     StarterKit,
-    //   ],
-    // })
   },
-
-  // beforeUnmount() {
-  //   this.editor.destroy()
-  // },
 
   methods: {
     async loadPest() {
       const {id} = this.$route.params
       if (id) {
         try {
-          const {data} = await axios.get(`/web/pests/${id}`)
+          const {data} = await axios.get(`/pests/${id}`)
           this.pest = data
         } catch (e) {
           console.error(e)
@@ -272,20 +314,6 @@ export default {
       }
       this.loading = false
     },
-
-    // loadChapters() {
-    //   this.loading = true
-    //   axios.get(`/chapters`)
-    //       .then(({data}) => {
-    //         this.chapters = data
-    //       })
-    //       .catch(e => {
-    //         console.error(e)
-    //       })
-    //       .finally(() => {
-    //         this.loading = false
-    //       })
-    // },
 
     async loadChapters() {
       try {
@@ -300,7 +328,7 @@ export default {
     async togglePublic(pest) {
       this.loading = true
       try {
-        const {data} = await axios.put(`/web/pests/${pest.id}/public`)
+        const {data} = await axios.put(`/pests/${pest.id}/public`)
         this.pest = data
         this.$notify({
           text: this.pest.is_public ? 'pest published successfully' : 'pest un-published successfully',
@@ -317,6 +345,32 @@ export default {
         console.error(e)
       }
       this.loading = false
+    },
+
+    create() {
+      this.loading = true
+      try {
+        this.form.is_pest = this.form.pest_type === 'insect' || this.form.pest_type === 'both'
+        this.form.is_disease = this.form.pest_type === 'disease' || this.form.pest_type === 'both'
+        this.form.affects_deciduous = this.form.tree_affected === 'deciduous' || this.form.tree_affected === 'both'
+        this.form.affects_conifer = this.form.tree_affected === 'conifer' || this.form.tree_affected === 'both'
+
+        const {data} = this.form.post(`/pests`)
+        this.$notify({
+          text: 'Pest created successfully',
+          type: 'success',
+        })
+        this.$emit('update', this.form)
+        this.$emit('close')
+      } catch (e) {
+        if (!e.response || e.response.status !== 422) {
+          this.$notify({
+            text: 'Could not process your request at this time. please try refreshing the page.',
+            type: 'error',
+          })
+        }
+        console.error(e)
+      }
     },
 
     updated() {

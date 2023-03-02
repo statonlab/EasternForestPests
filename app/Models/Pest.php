@@ -13,7 +13,7 @@ class Pest extends Model
      */
     protected $fillable = [
         'description',
-        'chapter',
+        'chapter_id',
         'pest_type',
         'is_pest',
         'is_disease',
@@ -28,6 +28,14 @@ class Pest extends Model
         'control',
         'other_info_title',
         'other_info_body',
+        'is_public',
+    ];
+
+    protected $casts = [
+        'major_hosts' => 'json',
+        'key_features' => 'json',
+        'control' => 'json',
+        'other_info_body' => 'json',
     ];
 
     public function commonNames(): \Illuminate\Database\Eloquent\Relations\HasMany
