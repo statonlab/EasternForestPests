@@ -47,7 +47,7 @@ export default {
 
   props: {
     content: {
-      type: Object,
+      type: String || Object || Array,
       default: '',
       required: false,
     },

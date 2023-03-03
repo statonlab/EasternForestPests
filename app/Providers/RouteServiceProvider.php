@@ -20,6 +20,15 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/admin';
 
     /**
+     * This namespace is applied to your controller routes.
+     *
+     * In addition, it is set as the URL generator's root namespace.
+     *
+     * @var string
+     */
+    protected $namespace = 'App\Http\Controllers';
+
+    /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
      * @return void
@@ -37,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
             'account',
             'downloads',
             'pests',
-            'pests/:id',
+            'pest/:id',
             'data-upload',
             'data-upload/dart',
             'data-upload/dart/create',
@@ -59,6 +68,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
+                ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
     }

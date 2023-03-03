@@ -25,10 +25,10 @@ class PestController extends Controller
         $pests = Pest::with(['chapter', 'commonNames', 'scientificNames'])
             ->when(!empty($request->search), function ($query) use ($request) {
                 $query->whereHas('commonNames', function ($query) use ($request) {
-                    $query->where('name', 'like', '%'. $request->search . '%');
+                    $query->where('name', 'like', '%' . $request->search . '%');
                 });
                 $query->orWhereHas('scientificNames', function ($query) use ($request) {
-                    $query->where('name', 'like', '%'. $request->search . '%');
+                    $query->where('name', 'like', '%' . $request->search . '%');
                 });
                 $query->orWhere('description', 'like', '%' . $request->search . '%');
                 $query->orWhere('major_hosts', 'like', '%' . $request->search . '%');
@@ -37,6 +37,7 @@ class PestController extends Controller
                 $query->orWhere('other_info_title', 'like', '%' . $request->search . '%');
                 $query->orWhere('other_info_body', 'like', '%' . $request->search . '%');
                 $query->orWhere('pest_type', 'like', '%' . $request->search . '%');
+                $query->orWhere('trees_affected', 'like', '%', $request->search . '%');
 //                $query->orWhere('disease_visibility', 'like', '%' . $request->search . '%');
                 // add visiblity query...
                 $query->orWhere('feeding_target', 'like', '%' . $request->search . '%');
@@ -49,7 +50,7 @@ class PestController extends Controller
     {
         // no authorization needed
         // request validation may be needed as filters are added
-        $pest = Pest::find($pest);
+        $pest->load(['chapter', 'commonNames', 'scientificNames', 'images']);
 
         return $this->success($pest);
     }
@@ -65,6 +66,7 @@ class PestController extends Controller
             'pest_type' => $request->pest_type,
             'is_pest' => $request->is_pest,
             'is_disease' => $request->is_disease,
+            'trees_affected' => $request->trees_affected,
             'affects_deciduous' => $request->affects_deciduous,
             'affects_conifer' => $request->affects_conifer,
             'visible_in_roots' => $request->visible_in_roots,
@@ -105,7 +107,7 @@ class PestController extends Controller
         return $this->created($pest);
     }
 
-    public function update(Request $request, Pest $pest): \Illuminate\Http\JsonResponse
+    public function store(Request $request, Pest $pest): \Illuminate\Http\JsonResponse
     {
         // authorize user
         // validate request
@@ -116,6 +118,7 @@ class PestController extends Controller
             'pest_type' => $request->pest_type,
             'is_pest' => $request->is_pest,
             'is_disease' => $request->is_disease,
+            'trees_affected' => $request->trees_affected,
             'affects_deciduous' => $request->affects_deciduous,
             'affects_conifer' => $request->affects_conifer,
             'visible_in_roots' => $request->visible_in_roots,

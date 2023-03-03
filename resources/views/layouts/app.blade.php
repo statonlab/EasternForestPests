@@ -25,6 +25,10 @@
     @if(auth()->check())
         <script>
             window.app.user = {!! json_encode(auth()->user()->only('name', 'id')) !!};
+
+            @if(auth()->user()->isSuperUser())
+                window.app.user.isSuperUser = true
+            @endif
         </script>
     @endif
 </head>

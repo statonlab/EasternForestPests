@@ -29,14 +29,14 @@
             </label>
             <select class="form-select" v-model="form.pest_type">
               <option disabled :value="null">{{ 'Select an option' }}</option>
-              <option value="insect">
+              <option value="Insect">
                 {{ `Insect` }}
               </option>
-              <option value="disease">
+              <option value="Disease">
                 {{ `Disease` }}
               </option>
-              <option value="both">
-                {{ `Both` }}
+              <option value="Insect and Disease Complex">
+                {{ `Insect and Disease Complex` }}
               </option>
             </select>
             <small class="form-text text-danger" v-if="form.errors.has('pest_type')">
@@ -48,16 +48,16 @@
             <label class="form-label">{{ 'Does this pest affect deciduous trees, conifer, or both?' }}
               <required/>
             </label>
-            <select class="form-select" v-model="form.tree_affected">
+            <select class="form-select" v-model="form.trees_affected">
               <option disabled :value="null">{{ 'Select a chapter' }}</option>
-              <option value="deciduous">
+              <option value="Deciduous">
                 {{ `Deciduous` }}
               </option>
-              <option value="conifer">
+              <option value="Conifer">
                 {{ `Conifer` }}
               </option>
-              <option value="both">
-                {{ `Both` }}
+              <option value="Deciduous and Conifer">
+                {{ `Deciduous and Conifer` }}
               </option>
             </select>
             <small class="form-text text-danger" v-if="form.errors.has('pest_type')">
@@ -210,8 +210,6 @@
               {{ form.errors.first('other_info_body') }}
             </span>
           </div>
-
-
         </modal-body>
         <modal-footer>
           <button type="submit" class="btn btn-primary" :disabled="loading">
@@ -246,7 +244,7 @@ import TipTap from "../components/TipTap.vue";
 
 
 export default {
-  name: 'PestEditor',
+  name: 'PestForm',
 
   components: {
     icon,
@@ -278,7 +276,7 @@ export default {
         pest_type: null,
         is_pest: false,
         is_disease: false,
-        tree_affected: null,
+        trees_affected: null,
         affects_deciduous: false,
         affects_conifer: false,
         visible_in_roots: false,
@@ -297,51 +295,23 @@ export default {
   },
 
   mounted() {
-    this.loadPest()
+    // this.loadPest()
     this.loadChapters()
+    if (this.pest) {
+      this.form.setDefault({
+        ...this.pest,
+        // set up names...
+        // do something do properly set up major_hosts, etc...
+      })
+    }
   },
 
   methods: {
-    async loadPest() {
-      const {id} = this.$route.params
-      if (id) {
-        try {
-          const {data} = await axios.get(`/pests/${id}`)
-          this.pest = data
-        } catch (e) {
-          console.error(e)
-        }
-      }
-      this.loading = false
-    },
-
     async loadChapters() {
       try {
-        const {data} = await axios.get(`/chapters`)
+        const {data} = await axios.get(`/web/chapters`)
         this.chapters = data
       } catch (e) {
-        console.error(e)
-      }
-      this.loading = false
-    },
-
-    async togglePublic(pest) {
-      this.loading = true
-      try {
-        const {data} = await axios.put(`/pests/${pest.id}/public`)
-        this.pest = data
-        this.$notify({
-          text: this.pest.is_public ? 'pest published successfully' : 'pest un-published successfully',
-          type: 'success',
-        })
-        this.$emit('update', data)
-      } catch (e) {
-        if (!e.response || e.response.status !== 422) {
-          this.$notify({
-            text: 'Could not process your request at this time. please try refreshing the page.',
-            type: 'error',
-          })
-        }
         console.error(e)
       }
       this.loading = false
@@ -350,12 +320,12 @@ export default {
     create() {
       this.loading = true
       try {
-        this.form.is_pest = this.form.pest_type === 'insect' || this.form.pest_type === 'both'
-        this.form.is_disease = this.form.pest_type === 'disease' || this.form.pest_type === 'both'
-        this.form.affects_deciduous = this.form.tree_affected === 'deciduous' || this.form.tree_affected === 'both'
-        this.form.affects_conifer = this.form.tree_affected === 'conifer' || this.form.tree_affected === 'both'
+        this.form.is_pest = this.form.pest_type === 'Insect' || this.form.pest_type === 'Insect and Disease Complex'
+        this.form.is_disease = this.form.pest_type === 'Disease' || this.form.pest_type === 'Insect and Disease Complex'
+        this.form.affects_deciduous = this.form.trees_affected === 'deciduous' || this.form.trees_affected === 'Deciduous and Conifer'
+        this.form.affects_conifer = this.form.trees_affected === 'conifer' || this.form.trees_affected === 'Deciduous and Conifer'
 
-        const {data} = this.form.post(`/pests`)
+        const {data} = this.form.post(`/web/pests`)
         this.$notify({
           text: 'Pest created successfully',
           type: 'success',
@@ -371,11 +341,6 @@ export default {
         }
         console.error(e)
       }
-    },
-
-    updated() {
-      this.loading = true
-      this.loadPest()
     },
 
     addCommonName() {

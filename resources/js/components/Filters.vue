@@ -85,7 +85,7 @@ export default {
   methods: {
     async loadCategories() {
       try {
-        const {data} = await axios.get(`/chapters`)
+        const {data} = await axios.get(`/web/chapters`)
         this.categories = data
       } catch (e) {
         if (e.response && e.response.status === 403) {

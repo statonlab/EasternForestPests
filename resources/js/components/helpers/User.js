@@ -6,6 +6,10 @@ class User {
   get() {
     return this.user
   }
+
+  isSuperUser() {
+    return !!this.user.isSuperUser
+  }
 }
 
 export default new User(window.app.user)

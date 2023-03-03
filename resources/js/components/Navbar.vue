@@ -85,7 +85,7 @@ export default {
       {
         async logout() {
           try {
-            const {data} = await axios.get(`/logout`)
+            const {data} = await axios.get(`/web/logout`)
             // this.$router.push({
             //   path: '/',
             // })

@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "Splash.vue"
+  name: "Splash"
 }
 </script>
 

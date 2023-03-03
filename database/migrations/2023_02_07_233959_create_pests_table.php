@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('pest_type')->nullable();
             $table->boolean('is_pest')->nullable();
             $table->boolean('is_disease')->nullable();
+            $table->string('trees_affected')->nullable();
             $table->boolean('affects_deciduous')->nullable();
             $table->boolean('affects_conifer')->nullable();
             $table->string('visible_in_roots')->nullable();

@@ -13,7 +13,7 @@
                  name="search"/>
         </div>
         <div class="flex-shrink-0">
-          <button class="btn btn-primary" type="button" @click.prevent="showPestEditor = true">
+          <button class="btn btn-primary" type="button" @click.prevent="showPestForm = true">
             <icon name="add"/>
             <span>{{ 'New Pest' }}</span>
           </button>
@@ -37,8 +37,7 @@
       />
     </div>
 
-    <!--    <pests-form v-if="showPestsForm" @create="created" @close="showpestsForm = false"/>-->
-    <pest-editor v-if="showPestEditor" :pest="selectedPest" @create="created" @close="showPestEditor = false"/>
+    <pest-form v-if="showPestForm" :pest="selectedPest" @update="created" @close="showPestForm = false"/>
   </div>
 </template>
 
@@ -48,19 +47,19 @@ import InlineSpinner from "./helpers/InlineSpinner.vue";
 import PestsList from "./PestsList.vue";
 import axios from "axios";
 import DropdownPager from "./helpers/DropdownPager.vue";
-import pestEditor from "../screens/PestEditor.vue";
+import PestForm from "../screens/PestForm.vue";
 
 
 export default {
   name: "PestsCard",
-  components: {PestsList, icon, InlineSpinner, DropdownPager, pestEditor},
+  components: {PestsList, icon, InlineSpinner, DropdownPager, PestForm},
   data() {
     return {
       ready: false,
       loading: true,
       pests: [],
       selectedPest: null,
-      showPestEditor: false,
+      showPestForm: false,
       page: 1,
       lastPage: 1,
       total: 1,
@@ -98,10 +97,6 @@ export default {
       // })
       this.loadPests()
     },
-
-    // active() {
-    //   this.loadPests()
-    // }
   },
 
   methods: {
@@ -109,31 +104,24 @@ export default {
       // if (this.$route.query.page) {
       //   this.page = parseInt(this.$route.query.page)
       // }
-
       this.ready = true
     },
 
     goToPest(pest) {
       this.$router.push({
-        path: `/app/pests/${pest.id}`,
+        path: `/pest/${pest.id}`,
       })
     },
 
     created(pest) {
       // this.loadPests()
-      this.showpestForm = false
+      this.showPestForm = false
+      this.loadPests()
       // this.$notify({
       //   text: `pest "${pest.title}" has been created successfully`,
       //   type: 'success',
       // })
     },
-    // goTopests(pests) {
-    //   this.$router.push({name: 'pests', params: {pestsId: pests.id}})
-    // },
-    // created(pests) {
-    //   this.pests.unshift(pests)
-    //   this.showpestsForm = false
-    // },
 
 
     async loadPests() {
@@ -150,7 +138,7 @@ export default {
       this.requestToken = axios.CancelToken.source()
 
       try {
-        const {data} = await axios.get('/pests', {
+        const {data} = await axios.get('/web/pests', {
           cancelToken: this.requestToken.token,
           params: {
             search: this.search,

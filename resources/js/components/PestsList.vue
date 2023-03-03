@@ -9,11 +9,7 @@
           <div class="d-flex align-items-center">
             <div class="border">
               img here
-
             </div>
-            <!--            <img :src="pest.cover_image ? pest.cover_image.url : ''"-->
-            <!--                 :alt="img"-->
-            <!--                 class="object-cover rounded flex-shrink-0" style="height: 50px; width: 50px;">-->
             <div class="ms-3">
               <div v-if="pest.common_names && pest.common_names.length > 0">
                 <span v-if="pest.common_names[0]" class="fw-bold text-gray-800">

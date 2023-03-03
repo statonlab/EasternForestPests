@@ -2,11 +2,16 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Http\Controllers\Traits\HandleChapters;
+use App\Models\SuperUser;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    use HandleChapters;
+
     /**
      * Seed the application's database.
      *
@@ -14,11 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::create([
+            'name' => 'Noah Caldwell',
+            'email' => 'noahgreycaldwell@gmail.com',
+            'password' => Hash::make('airhorns_flying17$')
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        SuperUser::create([
+            'user_id' => 1
+        ]);
+
+        $this->makeChapters();
     }
 }

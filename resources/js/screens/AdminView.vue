@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <h1 class="title mb-4">
       {{ 'Admin Panel' }}
     </h1>
@@ -20,98 +20,25 @@
         </ul>
         <pests-card v-if="active === 'pests'"/>
         <glossary-card v-if="active === 'glossaries'"/>
-        <!--        <div class="card-footer px-4 py-3 bg-light d-flex justify-content-end" v-if="lastPage > 1">-->
-        <!--          <dropdown-pager-->
-        <!--              class="card-footer"-->
-        <!--              :page="page"-->
-        <!--              :last-page="lastPage"-->
-        <!--              @change="pageChanged"-->
-        <!--          />-->
-        <!--        </div>-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import PestsCard from "../components/PestsCard.vue";
-import DropdownPager from "../components/helpers/DropdownPager.vue";
 import GlossaryCard from "../components/GlossaryCard.vue";
 import Filters from "../components/Filters.vue";
 
 export default {
-  name: "AdminView.vue",
-  components: {Filters, GlossaryCard, PestsCard, DropdownPager},
+  name: "AdminView",
+  components: {Filters, GlossaryCard, PestsCard},
   data() {
     return {
-      ready: true, // false
-      pests: [],
-      glossaries: [],
       selectedChapters: [],
       active: 'pests',
-      total: null,
-      requestToken: null,
     };
   },
-
-  mounted() {
-    // this.setOptionsFromHistory();
-    // this.loadPests();
-    // this.loadGlossary();
-  },
-
-  // watch: {
-  //   // search(search) {
-  //   //   if (this.timer) {
-  //   //     clearTimeout(this.timer)
-  //   //   }
-  //   //   this.timer = setTimeout(() => {
-  //   //     this.updateHistory({search})
-  //   //     this.page = 1
-  //   //     this.loadPosts()
-  //   //   }, 500)
-  //   // },
-  //
-  //   pestsPage(page) {
-  //     this.$router.push({
-  //       query: {
-  //         ...this.$route.query,
-  //         page,
-  //       },
-  //     }).catch((e) => {
-  //       console.error(e)
-  //     })
-  //     this.loadPests()
-  //   },
-  //
-  //   glossariesPage(page) {
-  //     this.$router.push({
-  //       query: {
-  //         ...this.$route.query,
-  //         page,
-  //       },
-  //     }).catch((e) => {
-  //       console.error(e)
-  //     })
-  //     this.loadGlossary()
-  //   },
-  //
-  //   // active() {
-  //   //   this.loadPests()
-  //   // }
-  // },
-
-  methods: {
-
-    // select(view) {
-    //   if (view === 'pests') {
-    //     this.active = 'pests'
-    //   } else {
-    //     this.active = 'glossaries'
-    //   }
-    // },
-  }
 }
 </script>
 

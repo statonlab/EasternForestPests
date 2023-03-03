@@ -17,6 +17,7 @@ class Pest extends Model
         'pest_type',
         'is_pest',
         'is_disease',
+        'trees_affected',
         'affects_deciduous',
         'affects_conifer',
         'visible_in_roots',

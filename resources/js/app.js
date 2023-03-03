@@ -4,12 +4,13 @@ import ErrorPage from './components/helpers/ErrorPage.vue'
 import('./bootstrap')
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
-import App from './screens/App.vue'
+import App from "./screens/App.vue";
 import Notifications from '@kyvg/vue3-notification'
 import ExampleComponent from "./components/ExampleComponent.vue";
 import AdminView from "./screens/AdminView.vue";
 import Splash from "./screens/Splash.vue";
-import PestEditor from "./screens/PestEditor.vue";
+import PestEditor from "./screens/PestForm.vue";
+import Pest from "./components/Pest.vue";
 
 
 // Register screens
@@ -32,6 +33,12 @@ const routes = [
         path: '/admin',
         component: AdminView,//() => AsyncComponent(import (/* webpackChunkName: "js/dashboard" */'./screens/AdminView.vue')),
     },
+    {
+        path: '/pest/:id',
+        component: Pest,
+    }
+
+
     // {
     //     path: '/pests/editor',
     //     component: PestEditor,

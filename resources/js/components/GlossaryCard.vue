@@ -110,7 +110,7 @@ export default {
       this.requestToken = axios.CancelToken.source()
 
       try {
-        const {data} = await axios.get('/glossaries', {
+        const {data} = await axios.get('/web/glossaries', {
           cancelToken: this.requestToken.token,
           params: {
             perPage: this.perPage,

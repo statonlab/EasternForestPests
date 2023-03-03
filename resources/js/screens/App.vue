@@ -23,7 +23,7 @@ import Sidebar from "../components/Sidebar.vue";
 import User from "../components/helpers/User";
 
 export default {
-  name: "App.vue",
+  name: "App",
   components: {Navbar, Sidebar},
   mounted() {
   },
